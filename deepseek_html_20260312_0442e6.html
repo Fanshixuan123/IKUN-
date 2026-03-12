@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>电脑配置DIY · 移动端适配</title>
+    <!-- QR Code 生成库 (轻量) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f3f5f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 12px 30px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 20px 16px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #1e293b;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .subhead {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 10px;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.4;
+        }
+        .selector-group {
+            margin-bottom: 18px;
+        }
+        .selector-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+        .selector-label span:last-child {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            font-size: 1rem;
+            color: #0f172a;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background-color: #ffffff;
+        }
+        .price-tag {
+            background: #1e293b;
+            color: white;
+            padding: 18px 20px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 24px 0 16px;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        .price-tag div:last-child {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #facc15;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 10px 18px -8px #3b82f680;
+            transition: background 0.15s, transform 0.1s;
+            margin-bottom: 14px;
+            border: 1px solid #2563eb;
+        }
+        .btn:active {
+            background: #2563eb;
+            transform: scale(0.98);
+            box-shadow: 0 5px 12px -5px #1e3a8a;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #1e293b;
+            border: 1.5px solid #cbd5e1;
+            box-shadow: none;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        .btn-outline:active {
+            background: #eef2f6;
+        }
+        .admin-section {
+            background: #f1f4f9;
+            border-radius: 24px;
+            padding: 18px 16px;
+            margin-top: 20px;
+            border: 1px dashed #94a3b8;
+        }
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .admin-header h3 {
+            color: #0f172a;
+            font-size: 1.3rem;
+        }
+        .input-sm {
+            padding: 12px 14px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        .login-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .login-row input {
+            flex: 2;
+            min-width: 140px;
+        }
+        .login-row button {
+            flex: 1;
+            white-space: nowrap;
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .category-grid {
+            background: white;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .item-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+            background: #f9f9fc;
+            padding: 8px 12px;
+            border-radius: 40px;
+        }
+        .item-row input:first-child {
+            flex: 2;
+        }
+        .item-row input:last-child {
+            flex: 1;
+            min-width: 70px;
+            text-align: right;
+        }
+        .cat-title {
+            font-weight: 600;
+            margin: 10px 0 8px;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+        .add-btn {
+            background: #e6edf8;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            color: #2563eb;
+            font-weight: 500;
+            margin: 5px 0 10px;
+            width: fit-content;
+        }
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-card {
+            background: white;
+            border-radius: 36px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 30px 40px #00000020;
+        }
+        .modal-card canvas {
+            display: block;
+            margin: 16px auto;
+            border-radius: 18px;
+            padding: 8px;
+            background: #fff;
+            box-shadow: 0 4px 12px #00000010;
+            width: 180px;
+            height: 180px;
+        }
+        .wechat-hint {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 12px 0 4px;
+        }
+        .close-btn {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 40px;
+            padding: 14px;
+            width: 100%;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-top: 16px;
+            color: #334155;
+        }
+        .footer-note {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .admin-only {
+            border-top: 2px solid #d1d9e6;
+            margin-top: 20px;
+        }
+        .contact-edit {
+            background: #ffffffd0;
+            border-radius: 28px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <!-- 标题区域 -->
+    <div class="card" style="padding-bottom: 12px;">
+        <h2>⚙️ 硬核选配 <span style="font-size: 0.9rem; background: #e6f0ff; padding: 5px 14px; border-radius: 40px; color: #2563eb;">焦作·心如止水</span></h2>
+        <div class="subhead">任意搭配 · 价格实时计算 · 含50元手工/运费/售后</div>
+    </div>
+
+    <!-- 选购面板 (普通用户) -->
+    <div class="card" id="userPanel">
+        <div id="selectorsContainer"></div>
+
+        <!-- 总价卡片 -->
+        <div class="price-tag">
+            <div>预估总价 💰</div>
+            <div id="totalPrice">0</div>
+        </div>
+
+        <!-- 立即购买按钮 -->
+        <button class="btn" id="buyNowBtn">📱 立即购买</button>
+        <div style="font-size:0.85rem; color:#64748b; text-align:center;">点击弹出联系方式，扫码加好友</div>
+    </div>
+
+    <!-- 后台登录/管理区域 (折叠) -->
+    <div class="card admin-section" id="adminCard">
+        <div id="adminLoginView">
+            <div class="admin-header">
+                <h3>🔐 后台管理</h3>
+            </div>
+            <div class="login-row">
+                <input type="password" id="adminPwd" class="input-sm" placeholder="密码 (123456)" value="">
+                <button id="loginBtn">登录</button>
+            </div>
+        </div>
+
+        <div id="adminPanelView" class="hidden">
+            <div class="admin-header">
+                <h3>📝 编辑配件 & 联系方式</h3>
+                <button id="logoutBtn" class="btn-outline" style="width: auto; padding: 8px 16px;">退出</button>
+            </div>
+            <!-- 动态生成管理表单 -->
+            <div id="adminEditor"></div>
+            <button class="btn" id="saveAdminChanges" style="margin-top: 18px;">💾 保存所有修改</button>
+        </div>
+    </div>
+
+    <!-- 联系方式弹窗 (二维码+微信号) -->
+    <div class="modal" id="contactModal">
+        <div class="modal-card">
+            <div style="font-size:1.4rem; font-weight:600; margin-bottom:6px;">🤝 联系商家</div>
+            <canvas id="qrCanvas"></canvas>
+            <div class="wechat-hint" id="wechatDisplay">心如止水</div>
+            <div style="color:#475569; margin: 8px 0;">河南焦作 · 扫一扫加我</div>
+            <button class="close-btn" id="closeModalBtn">关闭</button>
+        </div>
+    </div>
+
+    <div class="footer-note">* 后台可随时更新价格/微信号  密码:123456</div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 默认数据 (基于excel) ----------
+        const defaultCategories = {
+            cpu: [
+                { name: '2666v3', price: 140 },
+                { name: '2673v3', price: 80 },
+                { name: '1650v2', price: 50 },
+                { name: '2696v2', price: 60 },
+                { name: '2686v4', price: 130 },
+                { name: '2696v3', price: 200 },
+                { name: '2696v4', price: 260 }
+            ],
+            motherboard: [
+                { name: 'x99 (支持v3v4)', price: 130 },
+                { name: 'x79 (支持v2)', price: 90 }
+            ],
+            ram: [
+                { name: '16(8+8)', price: 220 },
+                { name: '32(16+16)', price: 520 },
+                { name: '无内存', price: 0 }
+            ],
+            graphics: [
+                { name: '无显卡', price: 0 },
+                { name: '办公亮机卡', price: 30 },
+                { name: 'gtx650', price: 110 },
+                { name: 'gtx750', price: 160 },
+                { name: 'gtx750ti', price: 225 },
+                { name: 'gtx960', price: 260 },
+                { name: 'rx460', price: 230 },
+                { name: 'rx560', price: 240 },
+                { name: 'r9 380', price: 260 },
+                { name: '1060 3g', price: 450 },
+                { name: '1050ti', price: 500 },
+                { name: '5700xt', price: 750 }
+            ],
+            storage: [
+                { name: '120g', price: 70 },
+                { name: '240g', price: 150 },
+                { name: '500g', price: 260 },
+                { name: '无硬盘', price: 0 }   // 补充选项
+            ],
+            power: [
+                { name: '300w', price: 30 },
+                { name: '400w', price: 55 },
+                { name: '500w', price: 80 },
+                { name: '600w', price: 105 }
+            ],
+            case: [
+                { name: '全黑小机箱', price: 30 },
+                { name: '全黑大机箱', price: 50 },
+                { name: '海景房(运费到付)', price: 80 }
+            ]
+        };
+
+        // 默认微信号/二维码内容
+        const DEFAULT_WECHAT = '心如止水 河南焦作';
+
+        // 初始化localStorage
+        function loadInitData() {
+            if (!localStorage.getItem('pcConfigs')) {
+                localStorage.setItem('pcConfigs', JSON.stringify(defaultCategories));
+            }
+            if (!localStorage.getItem('contactWechat')) {
+                localStorage.setItem('contactWechat', DEFAULT_WECHAT);
+            }
+        }
+        loadInitData();
+
+        // 读取数据
+        function getConfigs() {
+            return JSON.parse(localStorage.getItem('pcConfigs'));
+        }
+        function getWechat() {
+            return localStorage.getItem('contactWechat') || DEFAULT_WECHAT;
+        }
+
+        // 全局变量
+        let currentConfigs = getConfigs();
+        let currentWechat = getWechat();
+        let adminLoggedIn = false;   // 登录状态
+
+        // DOM 元素
+        const adminLoginView = document.getElementById('adminLoginView');
+        const adminPanelView = document.getElementById('adminPanelView');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminPwd = document.getElementById('adminPwd');
+        const adminEditor = document.getElementById('adminEditor');
+        const saveAdminBtn = document.getElementById('saveAdminChanges');
+        const selectorsContainer = document.getElementById('selectorsContainer');
+        const totalSpan = document.getElementById('totalPrice');
+        const buyBtn = document.getElementById('buyNowBtn');
+        const modal = document.getElementById('contactModal');
+        const closeModal = document.getElementById('closeModalBtn');
+        const qrCanvas = document.getElementById('qrCanvas');
+        const wechatDisplay = document.getElementById('wechatDisplay');
+
+        // 保存当前选中的值 { cpu:string, motherboard:string, ... }
+        let selectedOptions = {
+            cpu: '',
+            motherboard: '',
+            ram: '',
+            graphics: '',
+            storage: '',
+            power: '',
+            case: ''
+        };
+
+        // 渲染顾客选择器
+        function renderSelectors() {
+            const configs = currentConfigs;
+            let html = '';
+            const categories = [
+                { key: 'cpu', label: 'CPU' },
+                { key: 'motherboard', label: '主板' },
+                { key: 'ram', label: '内存' },
+                { key: 'graphics', label: '显卡' },
+                { key: 'storage', label: '硬盘' },
+                { key: 'power', label: '电源' },
+                { key: 'case', label: '机箱' }
+            ];
+
+            categories.forEach(cat => {
+                const items = configs[cat.key] || [];
+                const selected = selectedOptions[cat.key] || (items[0] ? items[0].name : '');
+
+                html += `<div class="selector-group">`;
+                html += `<div class="selector-label"><span>${cat.label}</span><span>💰 ￥${getPriceByName(cat.key, selected)}</span></div>`;
+                html += `<select id="select-${cat.key}" data-cat="${cat.key}">`;
+                items.forEach(item => {
+                    const selectedAttr = (item.name === selected) ? 'selected' : '';
+                    html += `<option value="${item.name}" ${selectedAttr}>${item.name} (￥${item.price})</option>`;
+                });
+                html += `</select>`;
+                html += `</div>`;
+            });
+
+            selectorsContainer.innerHTML = html;
+
+            // 绑定change事件
+            categories.forEach(cat => {
+                const sel = document.getElementById(`select-${cat.key}`);
+                if (sel) {
+                    sel.addEventListener('change', function(e) {
+                        selectedOptions[cat.key] = e.target.value;
+                        updateTotalPrice();
+                        // 更新小标签价格（立即简单重新渲染标签，或者直接更新对应label）
+                        updateSelectorLabel(cat.key, e.target.value);
+                    });
+                }
+            });
+            updateTotalPrice();
+        }
+
+        // 更新某个类别旁边的价格label
+        function updateSelectorLabel(catKey, selectedName) {
+            const price = getPriceByName(catKey, selectedName);
+            const labelDiv = document.querySelector(`#select-${catKey}`).closest('.selector-group')?.querySelector('.selector-label span:last-child');
+            if (labelDiv) labelDiv.innerText = `💰 ￥${price}`;
+        }
+
+        // 根据名称获取价格
+        function getPriceByName(catKey, itemName) {
+            const items = currentConfigs[catKey] || [];
+            const found = items.find(i => i.name === itemName);
+            return found ? found.price : 0;
+        }
+
+        // 计算总价 (各部件价格之和 + 50)
+        function computeTotalFromSelected() {
+            let sum = 50; // 手工运费售后
+            const categories = ['cpu','motherboard','ram','graphics','storage','power','case'];
+            categories.forEach(cat => {
+                const selName = selectedOptions[cat];
+                if (selName) {
+                    sum += getPriceByName(cat, selName);
+                } else {
+                    // 如果没有选中，默认选第一个
+                    const items = currentConfigs[cat] || [];
+                    if (items.length > 0) {
+                        selectedOptions[cat] = items[0].name;
+                        sum += items[0].price;
+                    }
+                }
+            });
+            return sum;
+        }
+
+        function updateTotalPrice() {
+            const total = computeTotalFromSelected();
+            totalSpan.innerText = `￥${total}`;
+        }
+
+        // ---------- 管理面板渲染 ----------
+        function renderAdminEditor() {
+            const configs = currentConfigs;
+            let html = '';
+
+            // 联系方式编辑
+            html += `<div class="contact-edit">`;
+            html += `<div style="font-weight:500; margin-bottom:8px;">📇 联系方式 (显示在二维码/弹窗)</div>`;
+            html += `<input type="text" id="adminWechatInput" class="input-sm" value="${currentWechat.replace(/"/g, '&quot;')}" placeholder="微信号/文字">`;
+            html += `</div>`;
+
+            // 各个配件分类
+            const catNames = {
+                cpu: 'CPU', motherboard: '主板', ram: '内存', graphics: '显卡', storage: '硬盘', power: '电源', case: '机箱'
+            };
+            for (let [key, items] of Object.entries(configs)) {
+                html += `<div class="category-grid">`;
+                html += `<div class="cat-title">${catNames[key] || key}</div>`;
+                html += `<div id="editor-${key}">`;
+                items.forEach((item, idx) => {
+                    html += `<div class="item-row" data-cat="${key}" data-index="${idx}">`;
+                    html += `<input type="text" class="item-name-input" value="${item.name.replace(/"/g, '&quot;')}" placeholder="名称">`;
+                    html += `<input type="number" class="item-price-input" value="${item.price}" placeholder="价格" step="1" min="0">`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+                // 添加新项按钮 (简单功能: 通过push默认项)
+                html += `<button class="add-btn" data-add-cat="${key}">➕ 添加新选项</button>`;
+                html += `</div>`;
+            }
+
+            adminEditor.innerHTML = html;
+
+            // 绑定“添加”按钮 (直接往currentConfigs推入临时数据，然后重新渲染编辑区)
+            document.querySelectorAll('[data-add-cat]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const cat = e.target.dataset.addCat;
+                    if (currentConfigs[cat]) {
+                        currentConfigs[cat].push({ name: '新选项', price: 0 });
+                        renderAdminEditor();    // 刷新管理表单
+                    }
+                });
+            });
+        }
+
+        // 从管理表单收集数据，更新currentConfigs
+        function gatherAdminData() {
+            const newWechat = document.getElementById('adminWechatInput')?.value.trim() || DEFAULT_WECHAT;
+            currentWechat = newWechat;
+
+            for (let catKey in currentConfigs) {
+                const container = document.getElementById(`editor-${catKey}`);
+                if (!container) continue;
+                const rows = container.querySelectorAll('.item-row');
+                const updatedItems = [];
+                rows.forEach(row => {
+                    const nameInput = row.querySelector('.item-name-input');
+                    const priceInput = row.querySelector('.item-price-input');
+                    if (nameInput && priceInput) {
+                        const name = nameInput.value.trim();
+                        const price = parseFloat(priceInput.value) || 0;
+                        if (name !== '') {
+                            updatedItems.push({ name, price });
+                        }
+                    }
+                });
+                if (updatedItems.length > 0) {
+                    currentConfigs[catKey] = updatedItems;
+                }
+            }
+        }
+
+        // 保存所有修改到localStorage并刷新前台
+        function saveAllChanges() {
+            gatherAdminData(); // 从表单收集到 currentConfigs / currentWechat
+            localStorage.setItem('pcConfigs', JSON.stringify(currentConfigs));
+            localStorage.setItem('contactWechat', currentWechat);
+            // 重新加载配置
+            currentConfigs = getConfigs();   // 确保一致
+            currentWechat = getWechat();
+
+            // 刷新前台select
+            renderSelectors();
+            // 刷新二维码以备弹窗
+            updateQRCode();
+            // 如果管理面板开着，重新渲染编辑区（可选）
+            if (adminLoggedIn) {
+                renderAdminEditor();
+            }
+            alert('配置已保存！');
+        }
+
+        // 更新二维码
+        function updateQRCode() {
+            if (qrCanvas) {
+                QRCode.toCanvas(qrCanvas, currentWechat, { width: 180, margin: 1 }, function (error) {
+                    if (error) console.error(error);
+                });
+            }
+            wechatDisplay.innerText = currentWechat;
+        }
+
+        // 显示弹窗
+        function showContactModal() {
+            updateQRCode();  // 确保最新
+            modal.classList.add('show');
+        }
+
+        // ---------- 登录逻辑 ----------
+        function setAdminMode( logged ) {
+            adminLoggedIn = logged;
+            if (logged) {
+                adminLoginView.classList.add('hidden');
+                adminPanelView.classList.remove('hidden');
+                renderAdminEditor();  // 填充管理数据
+            } else {
+                adminLoginView.classList.remove('hidden');
+                adminPanelView.classList.add('hidden');
+            }
+        }
+
+        loginBtn.addEventListener('click', () => {
+            const pwd = adminPwd.value;
+            if (pwd === '123456') {
+                setAdminMode(true);
+                adminPwd.value = '';
+            } else {
+                alert('密码错误 (123456)');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            setAdminMode(false);
+        });
+
+        saveAdminBtn.addEventListener('click', () => {
+            saveAllChanges();
+        });
+
+        // 立即购买
+        buyBtn.addEventListener('click', showContactModal);
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        // 点击modal外部关闭
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('show');
+        });
+
+        // 初始化选中状态 (默认第一个)
+        function initSelectedOptions() {
+            const configs = currentConfigs;
+            selectedOptions.cpu = configs.cpu[0]?.name || '';
+            selectedOptions.motherboard = configs.motherboard[0]?.name || '';
+            selectedOptions.ram = configs.ram[0]?.name || '';
+            selectedOptions.graphics = configs.graphics[0]?.name || '';
+            selectedOptions.storage = configs.storage[0]?.name || '';
+            selectedOptions.power = configs.power[0]?.name || '';
+            selectedOptions.case = configs.case[0]?.name || '';
+        }
+        initSelectedOptions();
+
+        // 首次渲染前台
+        renderSelectors();
+        updateQRCode(); // 预生成
+
+        // 监听select变化，更新selectedOptions & total已在事件中完成，但需要确保updateTotalPrice内使用最新选中
+        // 补充: 上面每个select change会调用 updateTotalPrice，同时调整label；但是总价里用了computeTotalFromSelected，它会从selectedOptions读取。
+        // 还有一处：渲染完成时可能有些select未触发，但selectedOptions已有默认，updateTotalPrice正确。
+        // 额外：当管理保存后，可能会增加/减少选项，selectedOptions需要调整为有效值
+        function reconcileSelected() {
+            const configs = currentConfigs;
+            for (let cat in selectedOptions) {
+                const items = configs[cat];
+                if (items && items.length > 0) {
+                    const exists = items.some(i => i.name === selectedOptions[cat]);
+                    if (!exists) {
+                        selectedOptions[cat] = items[0].name;  // 重置为第一个
+                    }
+                }
+            }
+        }
+
+        // 重写saveAllChanges加强协调
+        const originalSave = saveAllChanges;
+        saveAllChanges = function() {
+            gatherAdminData();
+            localStorage.setItem('pcConfigs', JSON.stringify(currentConfigs));
+            localStorage.setItem('contactWechat', currentWechat);
+            currentConfigs = getConfigs();
+            currentWechat = getWechat();
+            reconcileSelected();  // 修复选中项
+            renderSelectors();
+            if (adminLoggedIn) renderAdminEditor();
+            updateQRCode();
+            alert('配置已保存');
+        };
+        window.saveAllChanges = saveAllChanges;
+        // 重新绑定
+        saveAdminBtn.onclick = () => { saveAllChanges(); };
+
+        // 修正一些上下文
+        renderSelectors = function() {
+            const configs = currentConfigs;
+            let html = '';
+            const categories = [
+                { key: 'cpu', label: 'CPU' },
+                { key: 'motherboard', label: '主板' },
+                { key: 'ram', label: '内存' },
+                { key: 'graphics', label: '显卡' },
+                { key: 'storage', label: '硬盘' },
+                { key: 'power', label: '电源' },
+                { key: 'case', label: '机箱' }
+            ];
+
+            categories.forEach(cat => {
+                const items = configs[cat.key] || [];
+                // 确保selectedOptions有合法值
+                let selected = selectedOptions[cat.key];
+                if (!selected || !items.find(i => i.name === selected)) {
+                    selected = items[0]?.name || '';
+                    selectedOptions[cat.key] = selected;
+                }
+
+                html += `<div class="selector-group">`;
+                html += `<div class="selector-label"><span>${cat.label}</span><span>💰 ￥${getPriceByName(cat.key, selected)}</span></div>`;
+                html += `<select id="select-${cat.key}" data-cat="${cat.key}">`;
+                items.forEach(item => {
+                    const selectedAttr = (item.name === selected) ? 'selected' : '';
+                    html += `<option value="${item.name}" ${selectedAttr}>${item.name} (￥${item.price})</option>`;
+                });
+                html += `</select>`;
+                html += `</div>`;
+            });
+
+            selectorsContainer.innerHTML = html;
+
+            categories.forEach(cat => {
+                const sel = document.getElementById(`select-${cat.key}`);
+                if (sel) {
+                    sel.addEventListener('change', function(e) {
+                        selectedOptions[cat.key] = e.target.value;
+                        updateTotalPrice();
+                        const price = getPriceByName(cat.key, e.target.value);
+                        const labelDiv = this.closest('.selector-group')?.querySelector('.selector-label span:last-child');
+                        if (labelDiv) labelDiv.innerText = `💰 ￥${price}`;
+                    });
+                }
+            });
+            updateTotalPrice();
+        };
+
+        // 重写updateTotalPrice调用computeTotalFromSelected (不变)
+        // 启动所有
+        initSelectedOptions();
+        renderSelectors();
+    })();
+</script>
+</body>
+</html>
