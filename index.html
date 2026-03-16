@@ -656,7 +656,8 @@
             const hard_disk = document.getElementById('hard_disk').options[document.getElementById('hard_disk').selectedIndex].text;
             const power_supply = document.getElementById('power_supply').options[document.getElementById('power_supply').selectedIndex].text;
             const caseType = document.getElementById('case').options[document.getElementById('case').selectedIndex].text;
-            const total = document.getElementById('total-price').textContent;
+            const partsPrice = document.getElementById('parts-price').textContent;
+const total = document.getElementById('total-price').textContent;
 
             const config = `配置详情：
 CPU：${cpu || '未选择'}
@@ -666,7 +667,9 @@ CPU：${cpu || '未选择'}
 硬盘：${hard_disk || '未选择'}
 电源：${power_supply || '未选择'}
 机箱：${caseType || '未选择'}
-售价：${total}`;
+配件总价：${partsPrice}
+  + 50元（装机+运费+售后+散热）
+  售价：${total}`;
 
             navigator.clipboard.writeText(config).then(function() {
                 alert('配置和价格已复制到剪贴板');
@@ -683,7 +686,8 @@ CPU：${cpu || '未选择'}
             const hard_disk = document.getElementById('e3-hard_disk').options[document.getElementById('e3-hard_disk').selectedIndex].text;
             const power_supply = document.getElementById('e3-power_supply').options[document.getElementById('e3-power_supply').selectedIndex].text;
             const caseType = document.getElementById('e3-case').options[document.getElementById('e3-case').selectedIndex].text;
-            const total = document.getElementById('e3-total-price').textContent;
+            const partsPrice = document.getElementById('e3-parts-price').textContent;
+const total = document.getElementById('e3-total-price').textContent;
 
             const config = `配置详情：
 CPU：${cpu || '未选择'}
@@ -693,6 +697,8 @@ CPU：${cpu || '未选择'}
 硬盘：${hard_disk || '未选择'}
 电源：${power_supply || '未选择'}
 机箱：${caseType || '未选择'}
+配件总价：${partsPrice}
+  + 50元（装机+运费+售后+散热）
 售价：${total}`;
 
             navigator.clipboard.writeText(config).then(function() {
