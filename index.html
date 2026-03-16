@@ -671,11 +671,27 @@ CPU：${cpu || '未选择'}
   + 50元（装机+运费+售后+散热）
   售价：${total}`;
 
-            navigator.clipboard.writeText(config).then(function() {
+            // 创建一个textarea元素用于复制
+            const textArea = document.createElement('textarea');
+            textArea.value = config;
+            // 设置textarea的样式，避免影响页面
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            // 把textarea添加到页面
+            document.body.appendChild(textArea);
+            // 选中textarea的内容
+            textArea.select();
+            // 复制内容
+            try {
+                document.execCommand('copy');
                 alert('配置和价格已复制到剪贴板');
-            }).catch(function(err) {
+            } catch (err) {
                 alert('复制失败，请手动复制');
-            });
+            } finally {
+                // 移除textarea
+                document.body.removeChild(textArea);
+            }
         });
 
         document.getElementById('e3-copy-btn').addEventListener('click', function() {
@@ -701,11 +717,27 @@ CPU：${cpu || '未选择'}
   + 50元（装机+运费+售后+散热）
 售价：${total}`;
 
-            navigator.clipboard.writeText(config).then(function() {
+            // 创建一个textarea元素用于复制
+            const textArea = document.createElement('textarea');
+            textArea.value = config;
+            // 设置textarea的样式，避免影响页面
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            // 把textarea添加到页面
+            document.body.appendChild(textArea);
+            // 选中textarea的内容
+            textArea.select();
+            // 复制内容
+            try {
+                document.execCommand('copy');
                 alert('配置和价格已复制到剪贴板');
-            }).catch(function(err) {
+            } catch (err) {
                 alert('复制失败，请手动复制');
-            });
+            } finally {
+                // 移除textarea
+                document.body.removeChild(textArea);
+            }
         });
 
         // 配件参数弹窗
