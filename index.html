@@ -245,7 +245,7 @@
                                 <option value="2696v4">2696v4 - ¥260</option>
                                 <option value="2698bv3">2698bv3 - ¥90</option>
                                 <option value="2629v3">2629v3 - ¥65</option>
-                                <option value="2650">2650 - ¥30</option>
+                                <option value="2650">2650（仅支持x79主板） - ¥30</option>
                             </select>
                         </div>
                         <!-- 主板选择 -->
@@ -931,6 +931,16 @@
                 answer = "请拍照后点击<a href='https://www.doubao.com/chat/' target='_blank' class='text-tech-glow hover:underline'>https://www.doubao.com/chat/</a>，发给豆包一步一步教您处理。";
             }
 
+            // 7. 发货相关关键词
+            if (input.includes("发货")) {
+                answer = "发货地是河南，一般是48小时内发货。";
+            }
+
+            // 8. 到货时间相关关键词
+            if (input.includes("多久到") || input.includes("几天")) {
+                answer = "非偏远一般2天左右";
+            }
+
             // 模拟客服回复延迟
             setTimeout(() => {
                 const botMessage = document.createElement("div");
@@ -997,6 +1007,12 @@
             const power_supply = document.getElementById('e5-power_supply').value;
             const caseType = document.getElementById('e5-case').value;
 
+            // 检查2650 CPU与主板匹配
+            if (cpu === "2650" && motherboard !== "x79") {
+                alert("2650 CPU仅支持x79主板，请选择x79主板！");
+                return;
+            }
+
             let total = 0;
             if (cpu) total += e5Prices.cpu[cpu];
             if (motherboard) total += e5Prices.motherboard[motherboard];
@@ -1062,6 +1078,28 @@
             document.getElementById('faq-submit').addEventListener('click', matchFaqKeyword);
             document.getElementById('faq-input').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') matchFaqKeyword();
+            });
+
+            // ========== 2. E5 CPU与主板匹配监听 ==========
+            document.getElementById('e5-cpu').addEventListener('change', function() {
+                const cpu = this.value;
+                const motherboardSelect = document.getElementById('e5-motherboard');
+                if (cpu === "2650") {
+                    // 选择2650时，自动选择x79主板并禁用x99
+                    motherboardSelect.value = "x79";
+                    for (let option of motherboardSelect.options) {
+                        if (option.value === "x99") {
+                            option.disabled = true;
+                        }
+                    }
+                } else {
+                    // 启用x99选项
+                    for (let option of motherboardSelect.options) {
+                        if (option.value === "x99") {
+                            option.disabled = false;
+                        }
+                    }
+                }
             });
 
             // ========== 2. 联系我们弹窗事件 ==========
@@ -1269,7 +1307,7 @@ CPU：${cpu || '未选择'}
             document.getElementById('config1-btn').addEventListener('click', function() {
                 switchPage('e5-section');
                 document.getElementById('e5-cpu').value = '2650';
-                document.getElementById('e5-motherboard').innerHTML = '<option value="x99">x99（支持v3/v4） - ¥130</option>';
+                document.getElementById('e5-motherboard').innerHTML = '<option value="x79">x79（支持v2） - ¥90</option>';
                 document.getElementById('e5-memory').value = '16';
                 document.getElementById('e5-gpu').value = 'gtx650';
                 document.getElementById('e5-hard_disk').value = '120';
