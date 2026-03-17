@@ -119,6 +119,10 @@
         <!-- ====================== 1. 一级主页（优化抬头占用面积） ====================== -->
         <section id="home-section" class="block min-h-screen tech-bg">
             <div class="container mx-auto px-4 py-12 max-w-4xl relative z-10">
+                <!-- 包邮提示 -->
+                <div class="text-center py-3 text-lg font-bold mb-6 bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent animate-pulse">
+                    包邮相当于让您省了40元！
+                </div>
                 <!-- 头部标题（大幅缩小占用面积，保留设计感） -->
                 <header class="text-center mb-12 pt-8">
                     <!-- 装饰性发光线条 -->
@@ -696,34 +700,46 @@
 
     <!-- 3. 在线客服弹窗 -->
     <div id="faq-service-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="glass-card rounded-xl p-6 max-w-md w-full mx-3">
-            <h3 class="text-xl font-bold text-white mb-4 text-center">在线咨询客服</h3>
-            <!-- 输入框 -->
-            <div class="mb-4">
-                <input type="text" id="faq-input" placeholder="输入问题关键词（如：质保、价格、位置）" class="w-full p-3 rounded-lg bg-tech-main border border-tech-border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tech-glow/50">
-            </div>
-            <!-- 推荐问题（引导用户输入） -->
-            <div class="mb-4 text-gray-300 text-sm">
-                <p class="mb-2">试试问这些：</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-tech-main border border-tech-border px-2 py-1 rounded cursor-pointer hover:bg-tech-hover transition-colors" onclick="fillFaqInput('质保')">质保</span>
-                    <span class="bg-tech-main border border-tech-border px-2 py-1 rounded cursor-pointer hover:bg-tech-hover transition-colors" onclick="fillFaqInput('价格')">价格</span>
-                    <span class="bg-tech-main border border-tech-border px-2 py-1 rounded cursor-pointer hover:bg-tech-hover transition-colors" onclick="fillFaqInput('位置')">位置</span>
-                    <span class="bg-tech-main border border-tech-border px-2 py-1 rounded cursor-pointer hover:bg-tech-hover transition-colors" onclick="fillFaqInput('联系')">联系</span>
+        <div class="glass-card rounded-xl max-w-md w-full mx-3 flex flex-col h-[600px]">
+            <!-- 聊天窗口标题栏 -->
+            <div class="bg-tech-main border-b border-tech-border p-4 rounded-t-xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-white">在线咨询客服</h3>
+                    <button id="faq-close" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
                 </div>
             </div>
-            <!-- 答案显示区域 -->
-            <div id="faq-answer" class="bg-tech-main border border-tech-border p-4 rounded-lg mb-4 text-gray-300 min-h-[100px]">
-                请输入问题关键词，我会为你解答常见问题~
+            <!-- 聊天内容区域 -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-tech-main/50">
+                <!-- 初始客服消息 -->
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-tech-primary flex items-center justify-center text-white mr-3">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <div class="bg-tech-main rounded-lg rounded-tl-none p-3 max-w-[70%]">
+                        <p class="text-gray-300">你好，有什么可以帮你的吗？可以试试问质保、价格、位置等问题~</p>
+                    </div>
+                </div>
             </div>
-            <!-- 按钮 -->
-            <div class="flex gap-3">
-                <button id="faq-submit" class="bg-tech-primary hover:bg-tech-accent text-white font-medium py-2 px-6 rounded-lg transition-colors flex-1">
-                    发送
-                </button>
-                <button id="faq-close" class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                    关闭
-                </button>
+            <!-- 推荐问题区域 -->
+            <div class="p-4 border-y border-tech-border bg-tech-main/30">
+                <p class="text-gray-400 text-sm mb-2">热门问题：</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('质保')">质保</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('价格')">价格</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('位置')">位置</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('联系')">联系</span>
+                </div>
+            </div>
+            <!-- 输入区域 -->
+            <div class="p-4 rounded-b-xl">
+                <div class="flex gap-2">
+                    <input type="text" id="faq-input" placeholder="请输入你的问题..." class="flex-1 p-3 rounded-lg bg-tech-main border border-tech-border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tech-glow/50">
+                    <button id="faq-submit" class="bg-tech-primary hover:bg-tech-accent text-white p-3 rounded-lg transition-colors flex items-center justify-center">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -854,47 +870,91 @@
         };
 
         // ====================== 在线客服关键词匹配逻辑（新增联系类关键词） ======================
+        // ====================== 在线客服关键词匹配逻辑（新增联系类关键词） ======================
         function matchFaqKeyword() {
-            const input = document.getElementById('faq-input').value.trim().toLowerCase();
-            const answerEl = document.getElementById('faq-answer');
+            const input = document.getElementById("faq-input").value.trim().toLowerCase();
+            const chatMessages = document.getElementById("chat-messages");
+
+            // 清空输入框
+            document.getElementById("faq-input").value = "";
             
             // 若输入为空
-            if (!input) {
-                answerEl.innerHTML = "请输入问题关键词（如：质保、价格、位置）~";
-                return;
-            }
+            if (!input) return;
+
+            // 添加用户消息
+            const userMessage = document.createElement("div");
+            userMessage.className = "flex items-start justify-end";
+            userMessage.innerHTML = `
+                <div class="bg-tech-primary rounded-lg rounded-tr-none p-3 max-w-[70%]">
+                    <p class="text-white">${input}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-tech-accent flex items-center justify-center text-white ml-3">
+                    <i class="fa fa-user"></i>
+                </div>
+            `;
+            chatMessages.appendChild(userMessage);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 匹配关键词
+            let answer = "其他问题可直接联系微信：f1915621174";
 
             // 1. 质保/售后/保修类关键词
-            if (input.includes('质保') || input.includes('售后') || input.includes('保修')) {
-                answerEl.innerHTML = "整机质保3个月、显卡1个月，售后运费自理";
-                return;
+            if (input.includes("质保") || input.includes("售后") || input.includes("保修")) {
+                answer = "整机质保3个月、显卡1个月，售后运费自理";
             }
 
             // 2. 价格/优惠/便宜类关键词
-            if (input.includes('价格') || input.includes('优惠') || input.includes('便宜')) {
-                answerEl.innerHTML = "配件进价涨价确实没办法、目前还是全网最低价，可赠送电源线";
-                return;
+            if (input.includes("价格") || input.includes("优惠") || input.includes("便宜")) {
+                answer = "配件进价涨价确实没办法、目前还是全网最低价，可赠送电源线";
             }
 
             // 3. 位置/自提/在哪类关键词
-            if (input.includes('位置') || input.includes('自提') || input.includes('在哪')) {
-                answerEl.innerHTML = "位置在焦作新区林溪谷北门，可自行搜索导航";
-                return;
+            if (input.includes("位置") || input.includes("自提") || input.includes("在哪")) {
+                answer = "位置在焦作新区林溪谷北门，可自行搜索导航";
             }
 
             // 4. 新增：联系/客服/微信类模糊关键词
-            if (input.includes('联系') || input.includes('客服') || input.includes('微信') || input.includes('联系方式') || input.includes('加我')) {
-                answerEl.innerHTML = "请联系微信f1915621174";
-                return;
+            if (input.includes("联系") || input.includes("客服") || input.includes("微信") || input.includes("联系方式") || input.includes("加我")) {
+                answer = "请联系微信f1915621174";
             }
 
-            // 5. 其他问题
-            answerEl.innerHTML = "其他问题可直接联系微信：f1915621174";
+            // 5. 运费/快递/包邮类关键词
+            if (input.includes("运费") || input.includes("快递") || input.includes("包邮")) {
+                answer = "价格是包邮价格，默认中通包邮";
+            }
+
+            // 6. 电脑问题类关键词
+            const computerIssues = ["不能开机", "开不了机", "无法启动", "开机失败", "显卡安装", "显卡驱动", "显卡不显示", "进不去系统", "进不了桌面", "系统崩溃", "系统报错", "开机报错", "卡死", "死机", "卡顿严重", "运行缓慢", "内存不足", "安装系统", "重装系统", "噪音大", "风扇噪音", "自动重启", "自动关机", "屏幕不亮", "黑屏", "屏幕闪烁", "屏幕无显示", "蓝屏", "键盘失灵", "鼠标没反应", "USB识别不了", "声音没了", "网络连不上", "电脑发热", "硬件故障", "电脑故障", "电脑问题", "电脑维修", "软件打不开", "硬盘故障", "硬盘不识别"];
+            if (computerIssues.some(issue => input.includes(issue))) {
+                answer = "请拍照后点击<a href='https://www.doubao.com/chat/' target='_blank' class='text-tech-glow hover:underline'>https://www.doubao.com/chat/</a>，发给豆包一步一步教您处理。";
+            }
+
+            // 模拟客服回复延迟
+            setTimeout(() => {
+                const botMessage = document.createElement("div");
+                botMessage.className = "flex items-start";
+                botMessage.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-tech-primary flex items-center justify-center text-white mr-3">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <div class="bg-tech-main rounded-lg rounded-tl-none p-3 max-w-[70%]">
+                        <p class="text-gray-300">${answer}</p>
+                    </div>
+                `;
+                chatMessages.appendChild(botMessage);
+                
+                // 滚动到底部
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
         }
 
         // 填充输入框
-        function fillFaqInput(keyword) {
+        // 发送预设问题
+        function sendFaqMessage(keyword) {
             document.getElementById('faq-input').value = keyword;
+            matchFaqKeyword();
         }
 
         // 打开客服弹窗
