@@ -171,14 +171,14 @@
                     </button>
 
                     <!-- 在线咨询入口（替换原联系我们） -->
-                    <button onclick="openFaqModal()" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
+                    <button onclick="switchPage('buyer-review-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
                         <div class="flex items-center mb-5">
-                            <div class="w-14 h-14 rounded-full icon-gradient-cyan flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-cyan-500/30">
-                                <i class="fa fa-comments"></i>
+                            <div class="w-14 h-14 rounded-full icon-gradient-green flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-green-500/30">
+                                <i class="fa fa-star"></i>
                             </div>
-                            <h2 class="text-xl md:text-2xl font-bold text-white">在线咨询客服</h2>
+                            <h2 class="text-xl md:text-2xl font-bold text-white">买家真实评价</h2>
                         </div>
-                        <p class="text-gray-400 text-base">常见问题解答 | 一键咨询 | 人工客服对接</p>
+                        <p class="text-gray-400 text-base">真实用户反馈 | 装机效果展示 | 使用体验分享</p>
                     </button>
                 </div>
 
@@ -186,6 +186,12 @@
                 <footer class="text-center text-gray-500 text-sm mt-24 pb-8">
                     <p>© 2024 IKUN数码电脑专业户 | 所有配件均提供质保服务 | 全程一对一技术支持</p>
                 </footer>
+                <div class="fixed bottom-4 left-4 z-50">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-1.5 px-3 rounded-lg shadow-lg text-sm flex items-center transition-all duration-300">
+                        <i class="fa fa-shopping-cart mr-1"></i>
+                        立即购买
+                    </button>
+                </div>
             </div>
 
             <!-- 背景装饰光效 -->
@@ -332,7 +338,7 @@
 
                 <!-- 购买按钮 -->
                 <div class="text-center">
-                    <button onclick="openContactModal()" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
                         <i class="fa fa-shopping-cart mr-2"></i>
                         立即购买
                     </button>
@@ -473,7 +479,7 @@
 
                 <!-- 购买按钮 -->
                 <div class="text-center">
-                    <button onclick="openContactModal()" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
                         <i class="fa fa-shopping-cart mr-2"></i>
                         立即购买
                     </button>
@@ -562,6 +568,76 @@
                 </div>
             </div>
 
+            <!-- 背景装饰光效 -->
+            <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-tech-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+                <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-tech-cyan/15 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1s;"></div>
+            </div>
+        </section>
+        <!-- ====================== 5. 买家真实评价二级页面 ====================== -->
+        <section id="buyer-review-section" class="hidden min-h-screen tech-bg">
+            <!-- 返回主页按钮 -->
+            <div class="sticky top-0 z-40 bg-tech-main shadow-md">
+                <div class="container mx-auto px-4 py-3 flex items-center">
+                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
+                        <i class="fa fa-arrow-left mr-2"></i> 返回主页
+                    </button>
+                    <h2 class="text-white font-bold ml-auto mr-auto">买家真实评价</h2>
+                    <div class="w-16"></div> <!-- 占位，保持标题居中 -->
+                </div>
+            </div>
+            <div class="container mx-auto px-4 py-8 max-w-5xl relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 图片1 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/3783d33b9e5a4f0b910273f0d9c50b20.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=C0951clDZFsKaJvl5pAWY12u5s4%3D" alt="买家评价1" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片2 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b30821263bba4824be44419f4be7e47c.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=Cjrslh2ggpRJIcEkRrm95V7Oc08%3D" alt="买家评价2" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片3 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7a6a2667112344299ca93f3caa11200d.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=SvPsFfrs38m8o%2FGyziYxovknEbo%3D" alt="买家评价3" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片4 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/c170998b7cf54b5bb9ad7a45eb5e22b9.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=%2BYUft5sJaCnE1xr6mqL8Pe3CtsU%3D" alt="买家评价4" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片5 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/1aff688146f5462d8ae8d97b6f17ef1a.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=VMejzirk7bRf7YKXZA52Qxx8In8%3D" alt="买家评价5" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片6 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p3-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7612c9f4112f4931916d7df230cd2c6b.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=1FeX895k3wVd5lEmuc12DQMba1o%3D" alt="买家评价6" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片7 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b0220a9fb5974203bfbb0f26dd8be9a0.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=%2BZilV0N38lbJgVmeYiRZ%2FaslKgM%3D" alt="买家评价7" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片8 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/4c726c693bf741d48dab08adaa50f97e.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=u7w%2BWLpmaRjpxfOtiXd7flfDDUs%3D" alt="买家评价8" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片9 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/6d2a679256194d6db4cf81ce8a988400.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=8d2Gr4WerczewjSAeABFHITjacQ%3D" alt="买家评价9" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片10 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/8a61b6b5f444439a900dac7c1dc441da.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=OCg0MuazKEYTCgU68TR333vGmDQ%3D" alt="买家评价10" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片11 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/2564021c37e646bca9fa576f4b5254db.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=jPvAuxlDUze5re1r0JJ%2F33TqV54%3D" alt="买家评价11" class="w-full h-auto object-cover">
+                    </div>
+                    <!-- 图片12 -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/02fdc6e534334f4d882cb6433cee05e2.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=1JCaRO4B%2FLva1Gy21qiGp9o6ckM%3D" alt="买家评价12" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
             <!-- 背景装饰光效 -->
             <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-tech-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
