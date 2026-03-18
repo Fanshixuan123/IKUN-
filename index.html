@@ -245,7 +245,7 @@
                             <label for="e5-motherboard" class="block text-gray-700 font-medium text-sm md:text-base">主板型号</label>
                             <select id="e5-motherboard" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
                                 <option value="">请选择主板</option>
-                                <option value="x99（支持v3v4）">x99（支持v3v4） - ¥135</option>
+                                <option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>
                                 <option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>
                             </select>
                         </div>
@@ -303,10 +303,10 @@
                             </label>
                             <select id="e5-power_supply" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
                                 <option value="">请选择电源</option>
-                                <option value="300w">300w - ¥35</option>
-                                <option value="400w">400w - ¥60</option>
-                                <option value="500w">500w - ¥85</option>
-                                <option value="600w">600w - ¥110</option>
+                                <option value="300w">300w - ¥30</option>
+                                <option value="400w">400w - ¥55</option>
+                                <option value="500w">500w - ¥80</option>
+                                <option value="600w">600w - ¥105</option>
                             </select>
                         </div>
                         <!-- 机箱选择 -->
@@ -490,7 +490,7 @@
                     <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
                         <i class="fa fa-arrow-left mr-2"></i> 返回主页
                     </button>
-                    <h2 class="text-white font-bold ml-auto mr-auto">装机指南和教程</h2>
+                    <h2 class="text-white font-bold ml-auto mr-auto">装机指南和问题解决</h2>
                     <div class="w-16"></div> <!-- 占位，保持标题居中 -->
                 </div>
             </div>
@@ -793,7 +793,7 @@
                 "2666v3": 175, "2673v3": 90, "1650v2": 60, "2696v2": 70, "2686v4": 130,
                 "2696v3": 200, "2696v4": 320, "2698bv3": 95, "2629v3": 75, "2650": 30
             },
-            motherboard: { "x99（支持v3v4）": 135, "x79 （支持v2）": 90 },
+            motherboard: { "x99（支持v3v4）": 130, "x79 （支持v2）": 90 },
             memory: { "16（8+8）": 220, "32（16+16）": 520, "无内存": 0, "64（4*16）": 1040 },
             gpu: {
                 "无显卡": 0, "办公亮机卡": 30, "gtx650": 110, "gtx750": 160, "gtx750ti": 225,
@@ -801,7 +801,7 @@
                 "1050ti": 500, "5700xt": 750, "1070": 700
             },
             hard_disk: { "120g": 70, "240g": 150, "500g": 260 },
-            power_supply: { "300w": 35, "400w": 60, "500w": 85, "600w": 110 },
+            power_supply: { "300w": 30, "400w": 55, "500w": 80, "600w": 105 },
             case: { "全黑小机箱": 30, "全黑大机箱": 50, "海景房（运费到付）": 80 }
         };
         const e3Prices = {
@@ -1255,7 +1255,7 @@
                 const motherboardSelect = document.getElementById('e5-motherboard');
                 motherboardSelect.innerHTML = '';
                 if (selectedCpu.includes('v3') || selectedCpu.includes('v4')) {
-                    motherboardSelect.innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥135</option>';
+                    motherboardSelect.innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
                 } else {
                     motherboardSelect.innerHTML = '<option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>';
                 }
@@ -1475,7 +1475,7 @@ CPU：${cpu || '未选择'}
             document.getElementById('config5-btn').addEventListener('click', function() {
                 switchPage('e5-section');
                 document.getElementById('e5-cpu').value = '2673v3';
-                document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥135</option>';
+                document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
                 document.getElementById('e5-memory').value = '16（8+8）';
                 document.getElementById('e5-gpu').value = 'gtx750ti';
                 document.getElementById('e5-hard_disk').value = '240g';
@@ -1487,7 +1487,7 @@ CPU：${cpu || '未选择'}
             // ========== 8. 初始化默认配置 ==========
             // E5默认配置
             document.getElementById('e5-cpu').value = '2673v3';
-            document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥135</option>';
+            document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
             document.getElementById('e5-memory').value = '16（8+8）';
             document.getElementById('e5-gpu').value = '无显卡';
             document.getElementById('e5-hard_disk').value = '120g';
