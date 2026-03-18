@@ -969,6 +969,11 @@
             const targetPage = document.getElementById(targetPageId);
             targetPage.classList.remove('hidden');
             targetPage.classList.add('block');
+    // 页面切换后自动回到顶部
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
             // 更新激活页面
             activePage = targetPageId;
             // 记录当前配置类型
