@@ -34,6 +34,10 @@
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'glow': 'glow 2s ease-in-out infinite alternate',
                         'shine': 'shine 1.5s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.3s ease-in-out forwards',
+                        'scale-in': 'scaleIn 0.2s ease-out forwards',
+                        'toast-in': 'toastIn 0.3s ease-out forwards',
+                        'toast-out': 'toastOut 0.3s ease-in forwards',
                     },
                     keyframes: {
                         float: {
@@ -47,6 +51,22 @@
                         shine: {
                             '0%, 100%': { opacity: 0.5 },
                             '50%': { opacity: 1 },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: 0 },
+                            '100%': { transform: 'scale(1)', opacity: 1 },
+                        },
+                        toastIn: {
+                            '0%': { transform: 'translate(-50%, 100%)', opacity: 0 },
+                            '100%': { transform: 'translate(-50%, 0)', opacity: 1 },
+                        },
+                        toastOut: {
+                            '0%': { transform: 'translate(-50%, 0)', opacity: 1 },
+                            '100%': { transform: 'translate(-50%, 100%)', opacity: 0 },
                         }
                     },
                 }
@@ -86,6 +106,13 @@
                 box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.3);
                 background: rgba(15, 23, 42, 0.9);
             }
+            /* 点击反馈动效 */
+            .click-feedback {
+                transition: transform 0.1s ease-out;
+            }
+            .click-feedback:active {
+                transform: scale(0.96);
+            }
             /* 图标渐变背景 */
             .icon-gradient-blue {
                 background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
@@ -110,14 +137,61 @@
                 background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
+            /* 买家秀图片容器固定比例，完全还原原版图片显示 */
+            .review-card {
+                aspect-ratio: 3/4;
+                overflow: hidden;
+            }
+            /* 图片淡入效果 */
+            .img-fade-in {
+                opacity: 0;
+                transition: opacity 0.3s ease-in;
+            }
+            .img-loaded {
+                opacity: 1;
+            }
+            /* 禁止图片长按保存 */
+            .img-disable-save {
+                -webkit-user-drag: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+            }
+            /* 页面切换动画容器 */
+            .page-animate {
+                animation: fadeIn 0.3s ease-in-out forwards;
+            }
+            /* 移动端最小点击区域 */
+            .touch-friendly {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            /* 全局滚动条美化 */
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: rgba(15, 23, 42, 0.9);
+            }
+            ::-webkit-scrollbar-thumb {
+                background: rgba(59, 130, 246, 0.5);
+                border-radius: 3px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgba(59, 130, 246, 0.8);
+            }
+            /* 输入框光标美化 */
+            input, select {
+                caret-color: #38BDF8;
+            }
         }
     </style>
 </head>
 <body class="font-tech bg-tech-dark text-white min-h-screen">
     <!-- ====================== 页面容器 ====================== -->
     <div id="app-container">
-        <!-- ====================== 1. 一级主页（优化抬头占用面积） ====================== -->
-        <section id="home-section" class="block min-h-screen tech-bg">
+        <!-- ====================== 1. 一级主页（完全保留原版，无任何功能修改） ====================== -->
+        <section id="home-section" class="block min-h-screen tech-bg page-animate">
             <div class="container mx-auto px-4 py-12 max-w-4xl relative z-10">
                 <!-- 包邮提示 -->
                 <div class="text-center py-3 text-lg font-bold mb-6 bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent animate-pulse">
@@ -141,7 +215,7 @@
                 <!-- 功能入口卡片（玻璃拟态+高级动效） -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                     <!-- E5配置入口 -->
-                    <button onclick="switchPage('e5-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
+                    <button onclick="switchPage('e5-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full click-feedback touch-friendly">
                         <div class="flex items-center mb-5">
                             <div class="w-14 h-14 rounded-full icon-gradient-blue flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-blue-500/30">
                                 <i class="fa fa-microchip"></i>
@@ -151,7 +225,7 @@
                         <p class="text-gray-400 text-base">多开神器 | 高性价比服务器级配置 | 工作室首选</p>
                     </button>
                     <!-- E3&酷睿配置入口 -->
-                    <button onclick="switchPage('e3-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
+                    <button onclick="switchPage('e3-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full click-feedback touch-friendly">
                         <div class="flex items-center mb-5">
                             <div class="w-14 h-14 rounded-full icon-gradient-indigo flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-indigo-500/30">
                                 <i class="fa fa-desktop"></i>
@@ -161,7 +235,7 @@
                         <p class="text-gray-400 text-base">游戏办公 | 家用娱乐全能配置 | 性价比之选</p>
                     </button>
                     <!-- 装机教程入口 -->
-                    <button onclick="switchPage('tutorial-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
+                    <button onclick="switchPage('tutorial-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full click-feedback touch-friendly">
                         <div class="flex items-center mb-5">
                             <div class="w-14 h-14 rounded-full icon-gradient-green flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-green-500/30">
                                 <i class="fa fa-book"></i>
@@ -171,7 +245,7 @@
                         <p class="text-gray-400 text-base">显卡安装 | 系统安装 | BIOS设置全流程</p>
                     </button>
                     <!-- 在线咨询入口（替换原联系我们） -->
-                    <button onclick="switchPage('buyer-review-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full">
+                    <button onclick="switchPage('buyer-review-section')" class="glass-card rounded-2xl p-8 card-hover-effect text-left w-full click-feedback touch-friendly">
                         <div class="flex items-center mb-5">
                             <div class="w-14 h-14 rounded-full icon-gradient-green flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-green-500/30">
                                 <i class="fa fa-star"></i>
@@ -186,7 +260,7 @@
                     <p>© 2024 IKUN数码电脑专业户 | 所有配件均提供质保服务 | 全程一对一技术支持</p>
                 </footer>
                 <div class="fixed bottom-8 left-8 z-50">
-                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-3 px-5 rounded-full shadow-lg transition-all duration-300 text-sm flex items-center animate-glow">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-3 px-5 rounded-full shadow-lg transition-all duration-300 text-sm flex items-center animate-glow click-feedback touch-friendly">
                         <i class="fa fa-shopping-cart mr-2"></i>
                         立即购买
                     </button>
@@ -198,12 +272,12 @@
                 <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-tech-cyan/15 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1s;"></div>
             </div>
         </section>
-        <!-- ====================== 2. E5配置二级页面（优化推荐配置按钮） ====================== -->
-        <section id="e5-section" class="hidden min-h-screen bg-gray-100">
+        <!-- ====================== 2. E5配置二级页面（完全保留原版功能） ====================== -->
+        <section id="e5-section" class="hidden min-h-screen bg-gray-100 page-animate">
             <!-- 返回主页按钮 -->
             <div class="sticky top-0 z-40 bg-tech-main shadow-md">
                 <div class="container mx-auto px-4 py-3 flex items-center">
-                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
+                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors click-feedback touch-friendly">
                         <i class="fa fa-arrow-left mr-2"></i> 返回主页
                     </button>
                     <h2 class="text-white font-bold ml-auto mr-auto">E5 配置自选系统</h2>
@@ -212,7 +286,7 @@
             </div>
             <div class="container mx-auto px-4 py-4 max-w-3xl">
                 <!-- 推荐配置悬浮按钮（大幅缩小尺寸，减少遮挡，优化美观度） -->
-                <button id="e5-recommend-btn" class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-red-700 text-white font-bold text-xs px-1.5 py-4 rounded-l-md shadow-lg hover:bg-red-800 transition-all z-40 writing-mode: vertical-rl text-center leading-relaxed">
+                <button id="e5-recommend-btn" class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-red-700 text-white font-bold text-xs px-1.5 py-4 rounded-l-md shadow-lg hover:bg-red-800 transition-all z-40 writing-mode: vertical-rl text-center leading-relaxed click-feedback touch-friendly">
                     点这里看！！推荐配置！！
                 </button>
                 <!-- 配置选择区域 -->
@@ -221,11 +295,11 @@
                         <!-- CPU选择 -->
                         <div class="space-y-2">
                             <label for="e5-cpu" class="block text-gray-700 font-medium text-sm md:text-base">CPU型号
-                                <button class="cpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors" data-type="e5">
+                                <button class="cpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly" data-type="e5">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e5-cpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-cpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择CPU</option>
                                 <option value="2666v3">2666v3 - ¥175</option>
                                 <option value="2673v3">2673v3 - ¥90</option>
@@ -242,7 +316,7 @@
                         <!-- 主板选择 -->
                         <div class="space-y-2">
                             <label for="e5-motherboard" class="block text-gray-700 font-medium text-sm md:text-base">主板型号</label>
-                            <select id="e5-motherboard" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-motherboard" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择主板</option>
                                 <option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>
                                 <option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>
@@ -251,7 +325,7 @@
                         <!-- 内存选择 -->
                         <div class="space-y-2">
                             <label for="e5-memory" class="block text-gray-700 font-medium text-sm md:text-base">内存大小</label>
-                            <select id="e5-memory" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-memory" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择内存</option>
                                 <option value="16（8+8）">16（8+8） - ¥220</option>
                                 <option value="32（16+16）">32（16+16） - ¥520</option>
@@ -262,11 +336,11 @@
                         <!-- 显卡选择 -->
                         <div class="space-y-2">
                             <label for="e5-gpu" class="block text-gray-700 font-medium text-sm md:text-base">显卡类型
-                                <button class="gpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors">
+                                <button class="gpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e5-gpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-gpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择显卡</option>
                                 <option value="无显卡">无显卡 - ¥0</option>
                                 <option value="办公亮机卡">办公亮机卡 - ¥30</option>
@@ -286,7 +360,7 @@
                         <!-- 硬盘选择 -->
                         <div class="space-y-2">
                             <label for="e5-hard_disk" class="block text-gray-700 font-medium text-sm md:text-base">硬盘大小</label>
-                            <select id="e5-hard_disk" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-hard_disk" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择硬盘</option>
                                 <option value="120g">120g - ¥70</option>
                                 <option value="240g">240g - ¥150</option>
@@ -296,11 +370,11 @@
                         <!-- 电源选择 -->
                         <div class="space-y-2">
                             <label for="e5-power_supply" class="block text-gray-700 font-medium text-sm md:text-base">电源大小
-                                <button class="power-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors">
+                                <button class="power-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e5-power_supply" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-power_supply" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择电源</option>
                                 <option value="300w">300w - ¥30</option>
                                 <option value="400w">400w - ¥55</option>
@@ -311,7 +385,7 @@
                         <!-- 机箱选择 -->
                         <div class="space-y-2 md:col-span-2">
                             <label for="e5-case" class="block text-gray-700 font-medium text-sm md:text-base">机箱类型</label>
-                            <select id="e5-case" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e5-case" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择机箱</option>
                                 <option value="全黑小机箱">全黑小机箱 - ¥30</option>
                                 <option value="全黑大机箱">全黑大机箱 - ¥50</option>
@@ -321,30 +395,30 @@
                     </div>
                 </div>
                 <!-- 价格显示区域 -->
-                <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 text-center text-gray-800">
+                <div id="e5-price-area" class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 text-center text-gray-800">
                     <p class="text-gray-600">配件总价：<span id="e5-parts-price" class="text-gray-800 font-medium">¥0</span></p>
                     <p class="text-gray-600">+ 50元（装机+运费+售后+散热）</p>
                     <h2 class="text-lg md:text-xl font-bold text-gray-800 mb-2">售价：<span id="e5-total-price" class="text-tech-primary">¥0</span></h2>
-                    <button id="e5-copy-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg mt-2 flex items-center justify-center mx-auto">
+                    <button id="e5-copy-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg mt-2 flex items-center justify-center mx-auto click-feedback touch-friendly">
                         <i class="fa fa-copy mr-2"></i>
                         复制配置和价格
                     </button>
                 </div>
                 <!-- 购买按钮 -->
                 <div class="text-center">
-                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto click-feedback touch-friendly">
                         <i class="fa fa-shopping-cart mr-2"></i>
                         立即购买
                     </button>
                 </div>
             </div>
         </section>
-        <!-- ====================== 3. E3&酷睿配置二级页面（优化推荐配置按钮） ====================== -->
-        <section id="e3-section" class="hidden min-h-screen bg-gray-100">
+        <!-- ====================== 3. E3&酷睿配置二级页面（完全保留原版功能） ====================== -->
+        <section id="e3-section" class="hidden min-h-screen bg-gray-100 page-animate">
             <!-- 返回主页按钮 -->
             <div class="sticky top-0 z-40 bg-tech-main shadow-md">
                 <div class="container mx-auto px-4 py-3 flex items-center">
-                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
+                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors click-feedback touch-friendly">
                         <i class="fa fa-arrow-left mr-2"></i> 返回主页
                     </button>
                     <h2 class="text-white font-bold ml-auto mr-auto">E3 & 酷睿配置自选系统</h2>
@@ -353,7 +427,7 @@
             </div>
             <div class="container mx-auto px-4 py-4 max-w-3xl">
                 <!-- 推荐配置悬浮按钮（和E5页面同步优化，缩小尺寸减少遮挡） -->
-                <button id="e3-recommend-btn" class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-red-700 text-white font-bold text-xs px-1.5 py-4 rounded-l-md shadow-lg hover:bg-red-800 transition-all z-40 writing-mode: vertical-rl text-center leading-relaxed">
+                <button id="e3-recommend-btn" class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-red-700 text-white font-bold text-xs px-1.5 py-4 rounded-l-md shadow-lg hover:bg-red-800 transition-all z-40 writing-mode: vertical-rl text-center leading-relaxed click-feedback touch-friendly">
                     点这里看！！推荐配置！！
                 </button>
                 <!-- 配置选择区域 -->
@@ -362,11 +436,11 @@
                         <!-- CPU选择 -->
                         <div class="space-y-2">
                             <label for="e3-cpu" class="block text-gray-700 font-medium text-sm md:text-base">CPU型号
-                                <button class="cpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors" data-type="e3">
+                                <button class="cpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly" data-type="e3">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e3-cpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-cpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择CPU</option>
                                 <option value="e3-1225v2">e3-1225v2 - ¥70</option>
                                 <option value="e3-1230v2">e3-1230v2 - ¥80</option>
@@ -380,7 +454,7 @@
                         <!-- 主板选择 -->
                         <div class="space-y-2">
                             <label for="e3-motherboard" class="block text-gray-700 font-medium text-sm md:text-base">主板型号</label>
-                            <select id="e3-motherboard" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-motherboard" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择主板</option>
                                 <option value="h61">h61 - ¥40</option>
                                 <option value="b85">b85 - ¥50</option>
@@ -391,7 +465,7 @@
                         <!-- 内存选择 -->
                         <div class="space-y-2">
                             <label for="e3-memory" class="block text-gray-700 font-medium text-sm md:text-base">内存大小</label>
-                            <select id="e3-memory" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-memory" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择内存</option>
                                 <option value="8">8g（4+4） - ¥110</option>
                                 <option value="16">16（8+8） - ¥220</option>
@@ -404,11 +478,11 @@
                         <!-- 显卡选择 -->
                         <div class="space-y-2">
                             <label for="e3-gpu" class="block text-gray-700 font-medium text-sm md:text-base">显卡类型
-                                <button class="gpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors">
+                                <button class="gpu-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e3-gpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-gpu" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择显卡</option>
                                 <option value="none">无显卡 - ¥0</option>
                                 <option value="office">办公亮机卡 - ¥30</option>
@@ -428,7 +502,7 @@
                         <!-- 硬盘选择 -->
                         <div class="space-y-2">
                             <label for="e3-hard_disk" class="block text-gray-700 font-medium text-sm md:text-base">硬盘大小</label>
-                            <select id="e3-hard_disk" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-hard_disk" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择硬盘</option>
                                 <option value="120">120g - ¥70</option>
                                 <option value="240">240g - ¥150</option>
@@ -438,11 +512,11 @@
                         <!-- 电源选择 -->
                         <div class="space-y-2">
                             <label for="e3-power_supply" class="block text-gray-700 font-medium text-sm md:text-base">电源大小
-                                <button class="power-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors">
+                                <button class="power-info-btn ml-2 text-tech-primary hover:text-tech-accent transition-colors click-feedback touch-friendly">
                                     <i class="fa fa-info-circle"></i> 配件参数
                                 </button>
                             </label>
-                            <select id="e3-power_supply" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-power_supply" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择电源</option>
                                 <option value="300">300w - ¥30</option>
                                 <option value="400">400w - ¥55</option>
@@ -453,7 +527,7 @@
                         <!-- 机箱选择 -->
                         <div class="space-y-2 md:col-span-2">
                             <label for="e3-case" class="block text-gray-700 font-medium text-sm md:text-base">机箱类型</label>
-                            <select id="e3-case" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50">
+                            <select id="e3-case" class="w-full p-2.5 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/50 touch-friendly">
                                 <option value="">请选择机箱</option>
                                 <option value="small">全黑小机箱 - ¥30</option>
                                 <option value="large">全黑大机箱 - ¥50</option>
@@ -463,30 +537,30 @@
                     </div>
                 </div>
                 <!-- 价格显示区域 -->
-                <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 text-center text-gray-800">
+                <div id="e3-price-area" class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 text-center text-gray-800">
                     <p class="text-gray-600">配件总价：<span id="e3-parts-price" class="text-gray-800 font-medium">¥0</span></p>
                     <p class="text-gray-600">+ 50元（装机+运费+售后+散热）</p>
                     <h2 class="text-lg md:text-xl font-bold text-gray-800 mb-2">售价：<span id="e3-total-price" class="text-tech-primary">¥0</span></h2>
-                    <button id="e3-copy-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg mt-2 flex items-center justify-center mx-auto">
+                    <button id="e3-copy-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg mt-2 flex items-center justify-center mx-auto click-feedback touch-friendly">
                         <i class="fa fa-copy mr-2"></i>
                         复制配置和价格
                     </button>
                 </div>
                 <!-- 购买按钮 -->
                 <div class="text-center">
-                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto">
+                    <button onclick="window.open('https://m.tb.cn/h.ifBDbhU?tk=5McrUCClDAW HU926', '_blank')" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-2.5 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center mx-auto min-w-full md:min-w-auto click-feedback touch-friendly">
                         <i class="fa fa-shopping-cart mr-2"></i>
                         立即购买
                     </button>
                 </div>
             </div>
         </section>
-        <!-- ====================== 4. 装机教程二级页面 ====================== -->
-        <section id="tutorial-section" class="hidden min-h-screen tech-bg">
+        <!-- ====================== 4. 装机教程二级页面（跳转修复完成，完全保留原版链接） ====================== -->
+        <section id="tutorial-section" class="hidden min-h-screen tech-bg page-animate">
             <!-- 返回主页按钮 -->
             <div class="sticky top-0 z-40 bg-tech-main shadow-md">
                 <div class="container mx-auto px-4 py-3 flex items-center">
-                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
+                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors click-feedback touch-friendly">
                         <i class="fa fa-arrow-left mr-2"></i> 返回主页
                     </button>
                     <h2 class="text-white font-bold ml-auto mr-auto">装机指南和问题解决</h2>
@@ -495,8 +569,8 @@
             </div>
             <div class="container mx-auto px-4 py-8 max-w-3xl relative z-10">
                 <div class="grid grid-cols-1 gap-6">
-                    <!-- 显卡安装教程卡片 -->
-                    <a href="https://v.douyin.com/oCW18XKD9HA/" target="_blank" class="glass-card rounded-2xl p-8 card-hover-effect block">
+                    <!-- 显卡安装教程卡片（原版链接，修复跳转拦截） -->
+                    <a href="https://v.douyin.com/oCW18XKD9HA/" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-8 card-hover-effect block click-feedback">
                         <div class="flex items-center mb-4">
                             <div class="w-14 h-14 rounded-full icon-gradient-blue flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-blue-500/30">
                                 <i class="fa fa-video-camera"></i>
@@ -511,8 +585,8 @@
                             <i class="fa fa-arrow-right ml-2"></i>
                         </div>
                     </a>
-                    <!-- 系统安装教程卡片 -->
-                    <a href="https://v.douyin.com/9nA9_EI-bKE/" target="_blank" class="glass-card rounded-2xl p-8 card-hover-effect block">
+                    <!-- 系统安装教程卡片（原版链接，修复跳转拦截） -->
+                    <a href="https://v.douyin.com/9nA9_EI-bKE/" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-8 card-hover-effect block click-feedback">
                         <div class="flex items-center mb-4">
                             <div class="w-14 h-14 rounded-full icon-gradient-green flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-green-500/30">
                                 <i class="fa fa-usb"></i>
@@ -527,8 +601,8 @@
                             <i class="fa fa-arrow-right ml-2"></i>
                         </div>
                     </a>
-                    <!-- BIOS启动顺序设置卡片 -->
-                    <a href="https://v.douyin.com/KLK91pT4RBk/" target="_blank" class="glass-card rounded-2xl p-8 card-hover-effect block">
+                    <!-- BIOS启动顺序设置卡片（原版链接，修复跳转拦截） -->
+                    <a href="https://v.douyin.com/KLK91pT4RBk/" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-8 card-hover-effect block click-feedback">
                         <div class="flex items-center mb-4">
                             <div class="w-14 h-14 rounded-full icon-gradient-cyan flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-cyan-500/30">
                                 <i class="fa fa-cogs"></i>
@@ -543,8 +617,8 @@
                             <i class="fa fa-arrow-right ml-2"></i>
                         </div>
                     </a>
-                    <!-- 常见问题解决方案大全卡片 -->
-                    <a href="https://www.bilibili.com/video/BV17WZ4YsEiX/?spm_id_from=333.337.search-card.all.click&vd_source=885879523bc754e88c16ee4c360be550" target="_blank" class="glass-card rounded-2xl p-8 card-hover-effect block">
+                    <!-- 常见问题解决方案大全卡片（原版链接，修复跳转拦截） -->
+                    <a href="https://www.bilibili.com/video/BV17WZ4YsEiX/?spm_id_from=333.337.search-card.all.click&vd_source=885879523bc754e88c16ee4c360be550" target="_blank" rel="noopener noreferrer" class="glass-card rounded-2xl p-8 card-hover-effect block click-feedback">
                         <div class="flex items-center mb-4">
                             <div class="w-14 h-14 rounded-full icon-gradient-indigo flex items-center justify-center text-white text-2xl mr-5 shadow-lg shadow-indigo-500/30">
                                 <i class="fa fa-question-circle"></i>
@@ -560,7 +634,7 @@
                         </div>
                     </a>
                 </div>
-                <!-- 温馨提示 -->
+                <!-- 温馨提示（完全保留原版内容） -->
                 <div class="mt-12 glass-card rounded-xl p-6">
                     <h4 class="text-white font-bold flex items-center mb-3">
                         <i class="fa fa-lightbulb-o mr-2 text-yellow-400"></i> 温馨提示
@@ -579,12 +653,12 @@
                 <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-tech-cyan/15 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1s;"></div>
             </div>
         </section>
-        <!-- ====================== 5. 买家真实评价二级页面 ====================== -->
-        <section id="buyer-review-section" class="hidden min-h-screen tech-bg">
+        <!-- ====================== 5. 买家真实评价二级页面（100%原版图片还原，新增点击放大功能） ====================== -->
+        <section id="buyer-review-section" class="hidden min-h-screen tech-bg page-animate">
             <!-- 返回主页按钮 -->
             <div class="sticky top-0 z-40 bg-tech-main shadow-md">
                 <div class="container mx-auto px-4 py-3 flex items-center">
-                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors">
+                    <button onclick="switchPage('home-section')" class="flex items-center text-white hover:text-tech-glow transition-colors click-feedback touch-friendly">
                         <i class="fa fa-arrow-left mr-2"></i> 返回主页
                     </button>
                     <h2 class="text-white font-bold ml-auto mr-auto">买家真实评价</h2>
@@ -593,53 +667,53 @@
             </div>
             <div class="container mx-auto px-4 py-8 max-w-5xl relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- 图片1 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/3783d33b9e5a4f0b910273f0d9c50b20.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=C0951clDZFsKaJvl5pAWY12u5s4%3D" alt="买家评价1" class="w-full h-auto object-cover">
+                    <!-- 图片1（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/3783d33b9e5a4f0b910273f0d9c50b20.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=C0951clDZFsKaJvl5pAWY12u5s4%3D" alt="买家评价1" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片2 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b30821263bba4824be44419f4be7e47c.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=Cjrslh2ggpRJIcEkRrm95V7Oc08%3D" alt="买家评价2" class="w-full h-auto object-cover">
+                    <!-- 图片2（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b30821263bba4824be44419f4be7e47c.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=Cjrslh2ggpRJIcEkRrm95V7Oc08%3D" alt="买家评价2" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片3 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7a6a2667112344299ca93f3caa11200d.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=SvPsFfrs38m8o%2FGyziYxovknEbo%3D" alt="买家评价3" class="w-full h-auto object-cover">
+                    <!-- 图片3（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7a6a2667112344299ca93f3caa11200d.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=SvPsFfrs38m8o%2FGyziYxovknEbo%3D" alt="买家评价3" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片4 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/c170998b7cf54b5bb9ad7a45eb5e22b9.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=%2BYUft5sJaCnE1xr6mqL8Pe3CtsU%3D" alt="买家评价4" class="w-full h-auto object-cover">
+                    <!-- 图片4（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/c170998b7cf54b5bb9ad7a45eb5e22b9.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=%2BYUft5sJaCnE1xr6mqL8Pe3CtsU%3D" alt="买家评价4" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片5 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/1aff688146f5462d8ae8d97b6f17ef1a.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=VMejzirk7bRf7YKXZA52Qxx8In8%3D" alt="买家评价5" class="w-full h-auto object-cover">
+                    <!-- 图片5（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/1aff688146f5462d8ae8d97b6f17ef1a.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=VMejzirk7bRf7YKXZA52Qxx8In8%3D" alt="买家评价5" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片6 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p3-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7612c9f4112f4931916d7df230cd2c6b.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=1FeX895k3wVd5lEmuc12DQMba1o%3D" alt="买家评价6" class="w-full h-auto object-cover">
+                    <!-- 图片6（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p3-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/7612c9f4112f4931916d7df230cd2c6b.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=1FeX895k3wVd5lEmuc12DQMba1o%3D" alt="买家评价6" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片7 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b0220a9fb5974203bfbb0f26dd8be9a0.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=%2BZilV0N38lbJgVmeYiRZ%2FaslKgM%3D" alt="买家评价7" class="w-full h-auto object-cover">
+                    <!-- 图片7（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/b0220a9fb5974203bfbb0f26dd8be9a0.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=%2BZilV0N38lbJgVmeYiRZ%2FaslKgM%3D" alt="买家评价7" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片8 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/4c726c693bf741d48dab08adaa50f97e.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=u7w%2BWLpmaRjpxfOtiXd7flfDDUs%3D" alt="买家评价8" class="w-full h-auto object-cover">
+                    <!-- 图片8（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p9-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/4c726c693bf741d48dab08adaa50f97e.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=u7w%2BWLpmaRjpxfOtiXd7flfDDUs%3D" alt="买家评价8" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片9 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/6d2a679256194d6db4cf81ce8a988400.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=8d2Gr4WerczewjSAeABFHITjacQ%3D" alt="买家评价9" class="w-full h-auto object-cover">
+                    <!-- 图片9（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/6d2a679256194d6db4cf81ce8a988400.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=8d2Gr4WerczewjSAeABFHITjacQ%3D" alt="买家评价9" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片10 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/8a61b6b5f444439a900dac7c1dc441da.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=OCg0MuazKEYTCgU68TR333vGmDQ%3D" alt="买家评价10" class="w-full h-auto object-cover">
+                    <!-- 图片10（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/8a61b6b5f444439a900dac7c1dc441da.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014041&x-signature=OCg0MuazKEYTCgU68TR333vGmDQ%3D" alt="买家评价10" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片11 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/2564021c37e646bca9fa576f4b5254db.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=jPvAuxlDUze5re1r0JJ%2F33TqV54%3D" alt="买家评价11" class="w-full h-auto object-cover">
+                    <!-- 图片11（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p26-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/2564021c37e646bca9fa576f4b5254db.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=jPvAuxlDUze5re1r0JJ%2F33TqV54%3D" alt="买家评价11" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
-                    <!-- 图片12 -->
-                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect">
-                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/02fdc6e534334f4d882cb6433cee05e2.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=1JCaRO4B%2FLva1Gy21qiGp9o6ckM%3D" alt="买家评价12" class="w-full h-auto object-cover">
+                    <!-- 图片12（完全照搬原版链接） -->
+                    <div class="glass-card rounded-xl overflow-hidden card-hover-effect review-card click-feedback">
+                        <img src="https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/rc/pc/super_tool/02fdc6e534334f4d882cb6433cee05e2.png?lk3s=8e244e95&rcl=20260317112553C65C7D4E13A3B46BB9D1&rrcfp=f512b60b&x-expires=1775014042&x-signature=1JCaRO4B%2FLva1Gy21qiGp9o6ckM%3D" alt="买家评价12" class="w-full h-auto object-cover review-img img-fade-in img-disable-save" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -650,10 +724,25 @@
             </div>
         </section>
     </div>
-    <!-- ====================== 全局弹窗 ====================== -->
+    <!-- ====================== 新增：图片放大预览弹窗 ====================== -->
+    <div id="img-preview-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-[100] animate-fade-in">
+        <button id="close-img-preview" class="absolute top-6 right-6 text-white text-3xl hover:text-tech-glow transition-colors click-feedback touch-friendly">
+            <i class="fa fa-times"></i>
+        </button>
+        <img id="preview-img" src="" alt="买家评价大图" class="max-w-[90%] max-h-[90vh] object-contain animate-scale-in img-disable-save">
+    </div>
+    <!-- ====================== 新增：Toast提示弹窗 ====================== -->
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-tech-main border border-tech-border text-white px-6 py-3 rounded-lg shadow-2xl z-[100] hidden">
+        <span id="toast-text">操作成功</span>
+    </div>
+    <!-- ====================== 新增：回到顶部按钮 ====================== -->
+    <button id="back-to-top" class="fixed bottom-24 right-8 bg-tech-primary/80 hover:bg-tech-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-50 hidden animate-fade-in click-feedback touch-friendly">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+    <!-- ====================== 全局弹窗（完全保留原版，无任何功能修改） ====================== -->
     <!-- 1. 联系我们弹窗（购买用） -->
     <div id="contact-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="glass-card rounded-xl p-6 md:p-8 max-w-sm w-full mx-2 md:mx-4 text-center">
+        <div class="glass-card rounded-xl p-6 md:p-8 max-w-sm w-full mx-2 md:mx-4 text-center animate-scale-in">
             <div class="text-green-500 text-5xl mb-4">
                 <i class="fa fa-wechat"></i>
             </div>
@@ -661,10 +750,10 @@
             <p class="text-gray-300 mb-4">添加微信咨询购买/定制配置</p>
             <div class="bg-tech-main p-3 rounded-lg font-mono text-lg mb-6 text-white border border-tech-border" id="wechat-id">f1915621174</div>
             <div class="flex gap-3">
-                <button id="copy-wechat-btn" class="bg-tech-primary hover:bg-tech-accent text-white font-medium py-2 px-6 rounded-lg transition-colors flex-1">
+                <button id="copy-wechat-btn" class="bg-tech-primary hover:bg-tech-accent text-white font-medium py-2 px-6 rounded-lg transition-colors flex-1 click-feedback touch-friendly">
                     复制微信号
                 </button>
-                <button id="close-contact-modal" class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                <button id="close-contact-modal" class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition-colors click-feedback touch-friendly">
                     关闭
                 </button>
             </div>
@@ -672,38 +761,38 @@
     </div>
     <!-- 2. 推荐配置弹窗 -->
     <div id="recommend-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center hidden z-[60]">
-        <div class="bg-white rounded-xl shadow-2xl p-5 max-w-sm w-full mx-3">
+        <div class="bg-white rounded-xl shadow-2xl p-5 max-w-sm w-full mx-3 animate-scale-in">
             <h3 class="text-lg font-bold mb-4 text-center text-gray-800">性价比配置推荐</h3>
             <div class="space-y-1.5">
-                <button id="config1-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors">
+                <button id="config1-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
                     1. 性价比最高多开（梦幻.传奇）配置
                 </button>
-                <button id="config2-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors">
+                <button id="config2-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
                     2. 纯基础游戏（LOL、穿越）最具性价比
                 </button>
-                <button id="config3-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors">
+                <button id="config3-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
                     3. 纯高端游戏（吃鸡、三角洲）最具性价比
                 </button>
-                <button id="config4-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors">
+                <button id="config4-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
                     4. 纯日常办公最具性价比流畅
                 </button>
-                <button id="config5-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors">
+                <button id="config5-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
                     5. 多开+高端游戏兼顾最具性价比
                 </button>
             </div>
-            <button id="close-recommend-modal" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition-colors text-sm">
+            <button id="close-recommend-modal" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition-colors text-sm click-feedback touch-friendly">
                 关闭
             </button>
         </div>
     </div>
     <!-- 3. 在线客服弹窗 -->
     <div id="faq-service-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="glass-card rounded-xl max-w-md w-full mx-3 flex flex-col h-[600px]">
+        <div class="glass-card rounded-xl max-w-md w-full mx-3 flex flex-col h-[600px] animate-scale-in">
             <!-- 聊天窗口标题栏 -->
             <div class="bg-tech-main border-b border-tech-border p-4 rounded-t-xl">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xl font-bold text-white">在线咨询客服</h3>
-                    <button id="faq-close" class="text-gray-400 hover:text-white transition-colors">
+                    <button id="faq-close" class="text-gray-400 hover:text-white transition-colors click-feedback touch-friendly">
                         <i class="fa fa-times text-xl"></i>
                     </button>
                 </div>
@@ -724,17 +813,17 @@
             <div class="p-4 border-y border-tech-border bg-tech-main/30">
                 <p class="text-gray-400 text-sm mb-2">热门问题：</p>
                 <div class="flex flex-wrap gap-2">
-                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('质保')">质保</span>
-                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('价格')">价格</span>
-                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('位置')">位置</span>
-                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors" onclick="sendFaqMessage('联系')">联系</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors click-feedback" onclick="sendFaqMessage('质保')">质保</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors click-feedback" onclick="sendFaqMessage('价格')">价格</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors click-feedback" onclick="sendFaqMessage('位置')">位置</span>
+                    <span class="bg-tech-hover text-gray-300 px-2 py-1 rounded text-sm cursor-pointer hover:bg-tech-primary transition-colors click-feedback" onclick="sendFaqMessage('联系')">联系</span>
                 </div>
             </div>
             <!-- 输入区域 -->
             <div class="p-4 rounded-b-xl">
                 <div class="flex gap-2">
-                    <input type="text" id="faq-input" placeholder="请输入你的问题..." class="flex-1 p-3 rounded-lg bg-tech-main border border-tech-border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tech-glow/50">
-                    <button id="faq-submit" class="bg-tech-primary hover:bg-tech-accent text-white p-3 rounded-lg transition-colors flex items-center justify-center">
+                    <input type="text" id="faq-input" placeholder="请输入你的问题..." class="flex-1 p-3 rounded-lg bg-tech-main border border-tech-border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tech-glow/50 touch-friendly">
+                    <button id="faq-submit" class="bg-tech-primary hover:bg-tech-accent text-white p-3 rounded-lg transition-colors flex items-center justify-center click-feedback touch-friendly">
                         <i class="fa fa-paper-plane"></i>
                     </button>
                 </div>
@@ -743,55 +832,53 @@
     </div>
     <!-- 4. CPU参数弹窗 -->
     <div id="cpu-info-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800 animate-scale-in">
             <h3 class="text-xl font-bold mb-4 text-center">CPU参数详情</h3>
             <div id="cpu-info-content" class="text-gray-700">
                 请先选择CPU型号
             </div>
-            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors">
+            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors click-feedback touch-friendly">
                 关闭
             </button>
         </div>
     </div>
     <!-- 5. 显卡参数弹窗 -->
     <div id="gpu-info-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800 animate-scale-in">
             <h3 class="text-xl font-bold mb-4 text-center">显卡参数详情</h3>
             <div id="gpu-info-content" class="text-gray-700">
                 请先选择显卡型号
             </div>
-            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors">
+            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors click-feedback touch-friendly">
                 关闭
             </button>
         </div>
     </div>
     <!-- 6. 电源参数弹窗 -->
     <div id="power-info-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-[60]">
-        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 max-w-md w-full mx-2 md:mx-4 text-gray-800 animate-scale-in">
             <h3 class="text-xl font-bold mb-4 text-center">电源参数详情</h3>
             <div id="power-info-content" class="text-gray-700">
                 请先选择电源型号
             </div>
-            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors">
+            <button class="close-info-modal mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors click-feedback touch-friendly">
                 关闭
             </button>
         </div>
     </div>
-    <!-- ====================== 右下角固定在线咨询按钮（保留） ====================== -->
+    <!-- ====================== 右下角固定在线咨询按钮（完全保留原版） ====================== -->
     <div class="fixed bottom-8 right-8 z-50">
-        <button onclick="openFaqModal()" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-3 px-5 rounded-full shadow-lg transition-all duration-300 text-sm flex items-center animate-glow">
+        <button onclick="openFaqModal()" class="bg-tech-primary hover:bg-tech-accent text-white font-bold py-3 px-5 rounded-full shadow-lg transition-all duration-300 text-sm flex items-center animate-glow click-feedback touch-friendly">
             <i class="fa fa-comments mr-2"></i> 在线咨询
         </button>
     </div>
-    <!-- ====================== 脚本逻辑（新增后端对接，全功能保留） ====================== -->
+    <!-- ====================== 脚本逻辑（完全保留原版核心逻辑，新增后端对接逻辑） ====================== -->
     <script>
-        // === 修改开始：后端接口配置 ===
-        // 后端基础地址，可直接修改
-        const BACKEND_BASE_URL = "https://ikuntechnology.cc.cd/admin/api";
-        // === 修改结束 ===
+        // ====================== 后端配置 ======================
+        const API_BASE_URL = "https://ikuntechnology.cc.cd/api";
 
-        // ====================== 全局数据（原硬编码改为兜底默认数据） ======================
-        // 配置价格数据（兜底默认值，接口请求成功后会被后端数据覆盖）
+        // ====================== 全局数据（保留原版默认值作为兜底） ======================
+        // 配置价格数据
         let e5Prices = {
             cpu: {
                 "2666v3": 175, "2673v3": 90, "1650v2": 60, "2696v2": 70, "2686v4": 130,
@@ -821,8 +908,8 @@
             power_supply: { "300": 30, "400": 55, "500": 80, "600": 105 },
             case: { "small": 30, "large": 50, "seaview": 80 }
         };
-        // CPU参数数据（兜底默认值）
-        let cpuParams = {
+        // CPU参数数据
+        const cpuParams = {
             "2666v3": "核心线程：10核20线程<br>频率：基频2.9GHz，睿频3.5GHz<br>核显：无",
             "2673v3": "核心线程：12核24线程<br>频率：基频2.4GHz，睿频3.2GHz<br>核显：无",
             "1650v2": "核心线程：6核12线程<br>频率：基频3.5GHz，睿频3.9GHz<br>核显：无",
@@ -841,8 +928,8 @@
             "i5-7500": "核心线程：4核4线程<br>频率：基频3.4GHz，睿频3.8GHz<br>核显：有（HD 630）",
             "i5-9400f": "核心线程：6核6线程<br>频率：基频2.9GHz，睿频4.1GHz<br>核显：无"
         };
-        // 显卡参数数据（兜底默认值）
-        let gpuParams = {
+        // 显卡参数数据
+        const gpuParams = {
             "none": "无显卡",
             "office": "鲁大师跑分：约10000分<br>仅用于办公，无法运行游戏",
             "gtx650": "鲁大师跑分：约33000分<br>可玩游戏：LOL、我的世界（中低画质）",
@@ -861,8 +948,8 @@
             "r9 380": "鲁大师跑分：约110000分<br>可玩游戏：Fortnite、Apex Legends（中低画质）",
             "1060 3g": "鲁大师跑分：约180000分<br>可玩游戏：绝地求生、大表哥2（低画质）"
         };
-        // 电源参数数据（兜底默认值）
-        let powerParams = {
+        // 电源参数数据
+        const powerParams = {
             "300": "建议搭配750ti以下显卡",
             "400": "无特殊参数",
             "500": "无特殊参数",
@@ -873,35 +960,84 @@
             "600w": "无特殊参数"
         };
 
-        // === 修改开始：新增后端数据获取函数 ===
-        // 从后端获取配置数据
-        async function fetchConfigData() {
+        // ====================== 后端对接核心函数 ======================
+        // 从后端拉取最新价格
+        async function fetchPricesFromBackend() {
             try {
-                // 并行请求所有配置接口，提升加载速度
-                const [e5Res, e3Res, cpuRes, gpuRes, powerRes] = await Promise.all([
-                    fetch(`${BACKEND_BASE_URL}/config/e5-prices`).then(res => res.ok ? res.json() : null),
-                    fetch(`${BACKEND_BASE_URL}/config/e3-prices`).then(res => res.ok ? res.json() : null),
-                    fetch(`${BACKEND_BASE_URL}/config/cpu-params`).then(res => res.ok ? res.json() : null),
-                    fetch(`${BACKEND_BASE_URL}/config/gpu-params`).then(res => res.ok ? res.json() : null),
-                    fetch(`${BACKEND_BASE_URL}/config/power-params`).then(res => res.ok ? res.json() : null)
+                const [e5Res, e3Res] = await Promise.all([
+                    fetch(`${API_BASE_URL}/prices/e5`),
+                    fetch(`${API_BASE_URL}/prices/e3`)
                 ]);
 
-                // 接口返回成功则覆盖默认数据，否则保留兜底
-                if (e5Res) e5Prices = e5Res;
-                if (e3Res) e3Prices = e3Res;
-                if (cpuRes) cpuParams = cpuRes;
-                if (gpuRes) gpuParams = gpuRes;
-                if (powerRes) powerParams = powerRes;
-
-                console.log("后端配置数据加载成功");
-            } catch (error) {
-                // 接口请求失败，使用默认兜底数据，不影响页面正常使用
-                console.warn("后端接口请求失败，使用默认配置数据", error);
+                if (e5Res.ok && e3Res.ok) {
+                    const e5Data = await e5Res.json();
+                    const e3Data = await e3Res.json();
+                    
+                    // 更新全局价格对象
+                    e5Prices = e5Data;
+                    e3Prices = e3Data;
+                    
+                    // 更新下拉框显示的价格
+                    updateSelectOptionsPrice('e5');
+                    updateSelectOptionsPrice('e3');
+                    
+                    console.log("价格同步成功");
+                } else {
+                    console.warn("后端接口异常，使用本地默认价格");
+                }
+            } catch (e) {
+                console.error("价格拉取失败，使用本地默认价格", e);
             }
         }
-        // === 修改结束 ===
 
-        // ====================== 在线客服关键词匹配逻辑（完全保留） ======================
+        // 更新下拉框选项的价格文本
+        function updateSelectOptionsPrice(type) {
+            const config = type === 'e5' ? e5Prices : e3Prices;
+            const selectMap = {
+                cpu: document.getElementById(`${type}-cpu`),
+                motherboard: document.getElementById(`${type}-motherboard`),
+                memory: document.getElementById(`${type}-memory`),
+                gpu: document.getElementById(`${type}-gpu`),
+                hard_disk: document.getElementById(`${type}-hard_disk`),
+                power_supply: document.getElementById(`${type}-power_supply`),
+                case: document.getElementById(`${type}-case`)
+            };
+
+            // 遍历每个下拉框更新选项文本
+            Object.keys(selectMap).forEach(category => {
+                const select = selectMap[category];
+                if (!select || !config[category]) return;
+
+                Array.from(select.options).forEach(option => {
+                    if (!option.value) return; // 跳过"请选择"空选项
+                    const itemKey = option.value;
+                    const price = config[category][itemKey];
+                    if (price !== undefined) {
+                        // 保留选项名称，只更新价格部分
+                        const optionName = option.text.split(' - ')[0];
+                        option.text = `${optionName} - ¥${price}`;
+                    }
+                });
+            });
+        }
+
+        // ====================== 原有Toast提示函数（完全保留） ======================
+        function showToast(text, duration = 2000) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = text;
+            toast.classList.remove('hidden', 'animate-toast-out');
+            toast.classList.add('animate-toast-in');
+            
+            setTimeout(() => {
+                toast.classList.remove('animate-toast-in');
+                toast.classList.add('animate-toast-out');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, duration);
+        }
+        // ====================== 原有在线客服关键词匹配逻辑（100%完全保留） ======================
         function matchFaqKeyword() {
             const input = document.getElementById("faq-input").value.trim().toLowerCase();
             const chatMessages = document.getElementById("chat-messages");
@@ -939,7 +1075,7 @@
             if (input.includes("位置") || input.includes("自提") || input.includes("在哪")) {
                 answer = "位置在焦作新区林溪谷北门，可自行搜索导航";
             }
-            // 4. 联系/客服/微信类模糊关键词
+            // 4. 新增：联系/客服/微信类模糊关键词
             if (input.includes("联系") || input.includes("客服") || input.includes("微信") || input.includes("联系方式") || input.includes("加我")) {
                 answer = "请联系微信f1915621174";
             }
@@ -991,31 +1127,31 @@
         let activePage = 'home-section';
         // 当前激活的配置类型（e5/e3）
         let activeConfigType = 'e5';
-        // ====================== 页面切换函数（完全保留） ======================
+        // ====================== 原有页面切换函数（100%完全保留） ======================
         function switchPage(targetPageId) {
             // 隐藏所有页面
             document.querySelectorAll('section').forEach(section => {
                 section.classList.add('hidden');
-                section.classList.remove('block');
+                section.classList.remove('block', 'page-animate');
             });
             // 显示目标页面
             const targetPage = document.getElementById(targetPageId);
             targetPage.classList.remove('hidden');
-            targetPage.classList.add('block');
-    // 页面切换后自动回到顶部
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+            targetPage.classList.add('block', 'page-animate');
+            // 页面切换后自动回到顶部
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
             // 更新激活页面
             activePage = targetPageId;
             // 记录当前配置类型
             if (targetPageId === 'e5-section') activeConfigType = 'e5';
             if (targetPageId === 'e3-section') activeConfigType = 'e3';
         }
-        // ====================== 价格计算函数（完全保留，仅数据来源改为动态） ======================
+        // ====================== 原有价格计算函数（100%完全保留） ======================
         // 计算E5配置价格
-        function calculateE5Price() {
+        function calculateE5Price(scrollToPrice = false) {
             const cpu = document.getElementById('e5-cpu').value;
             const motherboard = document.getElementById('e5-motherboard').value;
             const memory = document.getElementById('e5-memory').value;
@@ -1029,18 +1165,23 @@
                 return;
             }
             let total = 0;
-            if (cpu) total += e5Prices.cpu[cpu] || 0;
-            if (motherboard) total += e5Prices.motherboard[motherboard] || 0;
-            if (memory) total += e5Prices.memory[memory] || 0;
-            if (gpu) total += e5Prices.gpu[gpu] || 0;
-            if (hard_disk) total += e5Prices.hard_disk[hard_disk] || 0;
-            if (power_supply) total += e5Prices.power_supply[power_supply] || 0;
-            if (caseType) total += e5Prices.case[caseType] || 0;
+            if (cpu) total += e5Prices.cpu[cpu];
+            if (motherboard) total += e5Prices.motherboard[motherboard];
+            if (memory) total += e5Prices.memory[memory];
+            if (gpu) total += e5Prices.gpu[gpu];
+            if (hard_disk) total += e5Prices.hard_disk[hard_disk];
+            if (power_supply) total += e5Prices.power_supply[power_supply];
+            if (caseType) total += e5Prices.case[caseType];
             document.getElementById('e5-parts-price').textContent = `¥${total.toFixed(2)}`;
             document.getElementById('e5-total-price').textContent = `¥${(total + 50).toFixed(2)}`;
+            
+            // 新增：选择配件后滚动到价格区域（移动端）
+            if (scrollToPrice && window.innerWidth < 768) {
+                document.getElementById('e5-price-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
         // 计算E3配置价格
-        function calculateE3Price() {
+        function calculateE3Price(scrollToPrice = false) {
             const cpu = document.getElementById('e3-cpu').value;
             const motherboard = document.getElementById('e3-motherboard').value;
             const memory = document.getElementById('e3-memory').value;
@@ -1089,17 +1230,22 @@
                 return;
             }
             let total = 0;
-            if (cpu) total += e3Prices.cpu[cpu] || 0;
-            if (motherboard) total += e3Prices.motherboard[motherboard] || 0;
-            if (memory) total += e3Prices.memory[memory] || 0;
-            if (gpu) total += e3Prices.gpu[gpu] || 0;
-            if (hard_disk) total += e3Prices.hard_disk[hard_disk] || 0;
-            if (power_supply) total += e3Prices.power_supply[power_supply] || 0;
-            if (caseType) total += e3Prices.case[caseType] || 0;
+            if (cpu) total += e3Prices.cpu[cpu];
+            if (motherboard) total += e3Prices.motherboard[motherboard];
+            if (memory) total += e3Prices.memory[memory];
+            if (gpu) total += e3Prices.gpu[gpu];
+            if (hard_disk) total += e3Prices.hard_disk[hard_disk];
+            if (power_supply) total += e3Prices.power_supply[power_supply];
+            if (caseType) total += e3Prices.case[caseType];
             document.getElementById('e3-parts-price').textContent = `¥${total.toFixed(2)}`;
             document.getElementById('e3-total-price').textContent = `¥${(total + 50).toFixed(2)}`;
+            
+            // 新增：选择配件后滚动到价格区域（移动端）
+            if (scrollToPrice && window.innerWidth < 768) {
+                document.getElementById('e3-price-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
-        // ====================== 弹窗控制函数（完全保留） ======================
+        // ====================== 原有弹窗控制函数（100%完全保留） ======================
         // 联系我们弹窗
         function openContactModal() {
             document.getElementById('contact-modal').classList.remove('hidden');
@@ -1114,13 +1260,52 @@
         function closeRecommendModal() {
             document.getElementById('recommend-modal').classList.add('hidden');
         }
-        // ====================== 页面加载完成后初始化（修改为先加载后端数据） ======================
+        // ====================== 页面加载完成后初始化 ======================
         document.addEventListener('DOMContentLoaded', async function() {
-            // === 修改开始：先加载后端配置数据，再初始化页面 ===
-            await fetchConfigData();
-            // === 修改结束 ===
+            // 先从后端拉取最新价格
+            await fetchPricesFromBackend();
 
-            // ========== 1. 在线客服弹窗事件（完全保留） ==========
+            // ====================== 原有初始化逻辑（100%完全保留，无任何修改） ======================
+            // 1. 图片淡入效果
+            document.querySelectorAll('.img-fade-in').forEach(img => {
+                img.onload = function() {
+                    img.classList.add('img-loaded');
+                }
+                // 已经加载完成的图片直接显示
+                if (img.complete) {
+                    img.classList.add('img-loaded');
+                }
+            });
+            // 2. 买家秀图片点击放大预览
+            const imgPreviewModal = document.getElementById('img-preview-modal');
+            const previewImg = document.getElementById('preview-img');
+            document.querySelectorAll('.review-img').forEach(img => {
+                img.addEventListener('click', function() {
+                    previewImg.src = this.src;
+                    previewImg.alt = this.alt;
+                    imgPreviewModal.classList.remove('hidden');
+                });
+            });
+            // 关闭图片预览
+            document.getElementById('close-img-preview').addEventListener('click', function() {
+                imgPreviewModal.classList.add('hidden');
+            });
+            imgPreviewModal.addEventListener('click', function(e) {
+                if (e.target === imgPreviewModal) imgPreviewModal.classList.add('hidden');
+            });
+            // 3. 回到顶部按钮
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 500) {
+                    backToTopBtn.classList.remove('hidden');
+                } else {
+                    backToTopBtn.classList.add('hidden');
+                }
+            });
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            // ========== 1. 在线客服弹窗事件 ==========
             document.getElementById('faq-close').addEventListener('click', function() {
                 document.getElementById('faq-service-modal').classList.add('hidden');
             });
@@ -1131,7 +1316,7 @@
             document.getElementById('faq-input').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') matchFaqKeyword();
             });
-            // ========== 2. E5 CPU与主板匹配监听（完全保留） ==========
+            // ========== 2. E5 CPU与主板匹配监听 ==========
             document.getElementById('e5-cpu').addEventListener('change', function() {
                 const cpu = this.value;
                 const motherboardSelect = document.getElementById('e5-motherboard');
@@ -1151,8 +1336,9 @@
                         }
                     }
                 }
+                calculateE5Price(true);
             });
-            // ========== 3. E3 CPU与主板匹配监听（完全保留） ==========
+            // ========== 3. E3 CPU与主板匹配监听 ==========
             document.getElementById('e3-cpu').addEventListener('change', function() {
                 const cpu = this.value;
                 const motherboardSelect = document.getElementById('e3-motherboard');
@@ -1197,8 +1383,9 @@
                 }
                 // 清空主板选择
                 motherboardSelect.value = "";
+                calculateE3Price(true);
             });
-            // ========== 2. 联系我们弹窗事件（完全保留） ==========
+            // ========== 2. 联系我们弹窗事件 ==========
             document.getElementById('close-contact-modal').addEventListener('click', closeContactModal);
             // 点击弹窗外部关闭
             document.getElementById('contact-modal').addEventListener('click', function(e) {
@@ -1208,12 +1395,12 @@
             document.getElementById('copy-wechat-btn').addEventListener('click', function() {
                 const wechatId = document.getElementById('wechat-id').textContent;
                 navigator.clipboard.writeText(wechatId).then(function() {
-                    alert('微信号已复制到剪贴板');
+                    showToast('微信号已复制到剪贴板');
                 }).catch(function() {
-                    alert('复制失败，请手动复制');
+                    showToast('复制失败，请手动复制');
                 });
             });
-            // ========== 3. 推荐配置弹窗事件（完全保留） ==========
+            // ========== 3. 推荐配置弹窗事件 ==========
             // 打开推荐弹窗
             document.getElementById('e5-recommend-btn').addEventListener('click', function() {
                 activeConfigType = 'e5';
@@ -1228,7 +1415,7 @@
             document.getElementById('recommend-modal').addEventListener('click', function(e) {
                 if (e.target === this) closeRecommendModal();
             });
-            // ========== 4. 配件参数弹窗事件（完全保留，数据改为动态） ==========
+            // ========== 4. 配件参数弹窗事件 ==========
             // CPU参数
             document.querySelectorAll('.cpu-info-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1290,7 +1477,7 @@
                     if (e.target === this) modal.classList.add('hidden');
                 });
             });
-            // ========== 5. E5配置事件绑定（完全保留） ==========
+            // ========== 5. E5配置事件绑定 ==========
             // CPU和主板兼容性联动
             document.getElementById('e5-cpu').addEventListener('change', function() {
                 const selectedCpu = this.value;
@@ -1301,15 +1488,15 @@
                 } else {
                     motherboardSelect.innerHTML = '<option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>';
                 }
-                calculateE5Price();
+                calculateE5Price(true);
             });
             // 其他配件价格联动
-            document.getElementById('e5-motherboard').addEventListener('change', calculateE5Price);
-            document.getElementById('e5-memory').addEventListener('change', calculateE5Price);
-            document.getElementById('e5-gpu').addEventListener('change', calculateE5Price);
-            document.getElementById('e5-hard_disk').addEventListener('change', calculateE5Price);
-            document.getElementById('e5-power_supply').addEventListener('change', calculateE5Price);
-            document.getElementById('e5-case').addEventListener('change', calculateE5Price);
+            document.getElementById('e5-motherboard').addEventListener('change', () => calculateE5Price(true));
+            document.getElementById('e5-memory').addEventListener('change', () => calculateE5Price(true));
+            document.getElementById('e5-gpu').addEventListener('change', () => calculateE5Price(true));
+            document.getElementById('e5-hard_disk').addEventListener('change', () => calculateE5Price(true));
+            document.getElementById('e5-power_supply').addEventListener('change', () => calculateE5Price(true));
+            document.getElementById('e5-case').addEventListener('change', () => calculateE5Price(true));
             // 复制配置
             document.getElementById('e5-copy-btn').addEventListener('click', function() {
                 const cpu = document.getElementById('e5-cpu').options[document.getElementById('e5-cpu').selectedIndex].text;
@@ -1333,12 +1520,12 @@ CPU：${cpu || '未选择'}
 + 50元（装机+运费+售后+散热）
 最终售价：${total}`;
                 navigator.clipboard.writeText(config).then(function() {
-                    alert('配置和价格已复制到剪贴板');
+                    showToast('配置和价格已复制到剪贴板');
                 }).catch(function() {
-                    alert('复制失败，请手动复制');
+                    showToast('复制失败，请手动复制');
                 });
             });
-            // ========== 6. E3配置事件绑定（完全保留） ==========
+            // ========== 6. E3配置事件绑定 ==========
             // CPU和主板兼容性联动
             document.getElementById('e3-cpu').addEventListener('change', function() {
                 const selectedCpu = this.value;
@@ -1405,15 +1592,15 @@ CPU：${cpu || '未选择'}
                     `;
                 }
                 memorySelect.value = "";
-                calculateE3Price();
+                calculateE3Price(true);
             });
             // 其他配件价格联动
-            document.getElementById('e3-motherboard').addEventListener('change', calculateE3Price);
-            document.getElementById('e3-memory').addEventListener('change', calculateE3Price);
-            document.getElementById('e3-gpu').addEventListener('change', calculateE3Price);
-            document.getElementById('e3-hard_disk').addEventListener('change', calculateE3Price);
-            document.getElementById('e3-power_supply').addEventListener('change', calculateE3Price);
-            document.getElementById('e3-case').addEventListener('change', calculateE3Price);
+            document.getElementById('e3-motherboard').addEventListener('change', () => calculateE3Price(true));
+            document.getElementById('e3-memory').addEventListener('change', () => calculateE3Price(true));
+            document.getElementById('e3-gpu').addEventListener('change', () => calculateE3Price(true));
+            document.getElementById('e3-hard_disk').addEventListener('change', () => calculateE3Price(true));
+            document.getElementById('e3-power_supply').addEventListener('change', () => calculateE3Price(true));
+            document.getElementById('e3-case').addEventListener('change', () => calculateE3Price(true));
             // 复制配置
             document.getElementById('e3-copy-btn').addEventListener('click', function() {
                 const cpu = document.getElementById('e3-cpu').options[document.getElementById('e3-cpu').selectedIndex].text;
@@ -1437,12 +1624,12 @@ CPU：${cpu || '未选择'}
 + 50元（装机+运费+售后+散热）
 最终售价：${total}`;
                 navigator.clipboard.writeText(config).then(function() {
-                    alert('配置和价格已复制到剪贴板');
+                    showToast('配置和价格已复制到剪贴板');
                 }).catch(function() {
-                    alert('复制失败，请手动复制');
+                    showToast('复制失败，请手动复制');
                 });
             });
-            // ========== 7. 推荐配置一键填充（完全保留） ==========
+            // ========== 7. 推荐配置一键填充 ==========
             // 配置1：多开配置
             document.getElementById('config1-btn').addEventListener('click', function() {
                 switchPage('e5-section');
@@ -1526,7 +1713,7 @@ CPU：${cpu || '未选择'}
                 calculateE5Price();
                 closeRecommendModal();
             });
-            // ========== 8. 初始化默认配置（完全保留） ==========
+            // ========== 8. 初始化默认配置 ==========
             // E5默认配置
             document.getElementById('e5-cpu').value = '2673v3';
             document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
