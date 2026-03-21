@@ -1258,6 +1258,10 @@
             document.getElementById('e3-hard_disk').value = '120';
             document.getElementById('e3-power_supply').value = '300';
             document.getElementById('e3-case').value = 'small';
+            
+            // 修复CPU自动匹配的事件绑定，替换原来的事件处理
+            document.getElementById('e5-cpu').onchange = handleE5CpuChange;
+            document.getElementById('e3-cpu').onchange = handleE3CpuChange;
         }
 
         // ========== 8. 页面切换功能（完全保留原版） ==========
@@ -1273,6 +1277,80 @@
         }
 
         // ========== 9. 价格计算功能（完全保留原版逻辑，仅数据来源改为后端） ==========
+        // ========== CPU选择自动匹配主板/内存功能（修复自动选择bug） ==========
+        function handleE5CpuChange() {
+            const cpu = document.getElementById('e5-cpu').value;
+            const motherboardSelect = document.getElementById('e5-motherboard');
+            
+            // 根据CPU类型自动设置匹配的主板选项
+            if (cpu === '2650' || cpu.endsWith('v2')) {
+                // 2650和v2系列CPU，自动匹配x79主板
+                motherboardSelect.innerHTML = '<option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>';
+            } else {
+                // v3/v4系列CPU，自动匹配x99主板
+                motherboardSelect.innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
+            }
+            
+            // 重新计算价格
+            calculateE5Price();
+        }
+        
+        function handleE3CpuChange() {
+            const cpu = document.getElementById('e3-cpu').value;
+            const motherboardSelect = document.getElementById('e3-motherboard');
+            const memorySelect = document.getElementById('e3-memory');
+            
+            let motherboardHtml, memoryHtml;
+            
+            // 根据CPU类型自动设置匹配的主板和内存选项
+            if (cpu === 'e3-1225v2' || cpu === 'e3-1230v2') {
+                // v2系列CPU，匹配h61主板+DDR3内存
+                motherboardHtml = '<option value="h61">h61 - ¥40</option>';
+                memoryHtml = `
+                    <option value="">请选择内存</option>
+                    <option value="8" selected>8g（4+4） - ¥110</option>
+                    <option value="16">16（8+8） - ¥220</option>
+                    <option value="32">32（16+16） - ¥520</option>
+                    <option value="0">无内存 - ¥0</option>
+                `;
+            } else if (cpu === 'e3-1225v3' || cpu === 'e3-1230v3' || cpu === 'i5-4590') {
+                // v3/i5-4590，匹配b85主板+DDR3内存
+                motherboardHtml = '<option value="b85">b85 - ¥50</option>';
+                memoryHtml = `
+                    <option value="">请选择内存</option>
+                    <option value="8" selected>8g（4+4） - ¥110</option>
+                    <option value="16">16（8+8） - ¥220</option>
+                    <option value="32">32（16+16） - ¥520</option>
+                    <option value="0">无内存 - ¥0</option>
+                `;
+            } else if (cpu === 'i5-7500') {
+                // i5-7500，匹配h110主板+DDR4内存
+                motherboardHtml = '<option value="h110">h110 - ¥120</option>';
+                memoryHtml = `
+                    <option value="">请选择内存</option>
+                    <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
+                    <option value="ddr4-16">ddr4 16g - ¥440</option>
+                    <option value="0">无内存 - ¥0</option>
+                `;
+            } else if (cpu === 'i5-9400f') {
+                // i5-9400f，匹配b365-h310主板+DDR4内存
+                motherboardHtml = '<option value="b365-h310">b365-h310 - ¥150</option>';
+                memoryHtml = `
+                    <option value="">请选择内存</option>
+                    <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
+                    <option value="ddr4-16">ddr4 16g - ¥440</option>
+                    <option value="0">无内存 - ¥0</option>
+                `;
+            }
+            
+            // 更新主板和内存的下拉选项
+            motherboardSelect.innerHTML = motherboardHtml;
+            memorySelect.innerHTML = memoryHtml;
+            
+            // 重新计算价格
+            calculateE3Price();
+        }
+
         function calculateE5Price() {
             let total = 0;
             const cpu = document.getElementById('e5-cpu').value;
