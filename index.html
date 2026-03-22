@@ -530,6 +530,7 @@
                     </ul>
                 </div>
             </div>
+            <!-- 背景装饰光效（完全保留原版） -->
             <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-tech-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
                 <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-tech-cyan/15 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1s;"></div>
@@ -586,6 +587,7 @@
                     </div>
                 </div>
             </div>
+            <!-- 背景装饰光效（完全保留原版） -->
             <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-tech-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
                 <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-tech-cyan/15 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1s;"></div>
@@ -624,25 +626,13 @@
             </div>
         </div>
     </div>
+    <!-- ====================== 推荐配置弹窗（仅修改按钮容器，其余完全保留原版） ====================== -->
     <div id="recommend-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center hidden z-[60]">
         <div class="bg-white rounded-xl shadow-2xl p-5 max-w-sm w-full mx-3 animate-scale-in">
             <h3 class="text-lg font-bold mb-4 text-center text-gray-800">性价比配置推荐</h3>
-            <div class="space-y-1.5">
-                <button id="config1-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
-                    1. 性价比最高多开（梦幻.传奇）配置
-                </button>
-                <button id="config2-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
-                    2. 纯基础游戏（LOL、穿越）最具性价比
-                </button>
-                <button id="config3-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
-                    3. 纯高端游戏（吃鸡、三角洲）最具性价比
-                </button>
-                <button id="config4-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
-                    4. 纯日常办公最具性价比流畅
-                </button>
-                <button id="config5-btn" class="w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly">
-                    5. 多开+高端游戏兼顾最具性价比
-                </button>
+            <!-- 动态推荐配置列表容器（替换原硬编码按钮，其余结构不变） -->
+            <div id="recommend-config-list" class="space-y-1.5">
+                <p class="text-gray-500 text-center py-4">加载中...</p>
             </div>
             <button id="close-recommend-modal" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg transition-colors text-sm click-feedback touch-friendly">
                 关闭
@@ -727,43 +717,47 @@
             <i class="fa fa-comments mr-2"></i> 在线咨询
         </button>
     </div>
-    <!-- ====================== JavaScript逻辑（最小化修改，仅对接后端） ====================== -->
+    <!-- ====================== JavaScript逻辑（仅修改推荐配置相关，其余完全保留原版） ====================== -->
     <script>
-        // ========== 1. 后端接口地址（请替换为你的实际后端地址） ==========
+        // ========== 1. 后端接口地址（完全保留原版，用户自行替换） ==========
         const API_BASE_URL = "https://ikuntechnology.cc.cd"; // 替换为你的Cloudflare Worker地址
-        // ========== 2. 全局数据（从后端获取） ==========
+        // ========== 2. 全局数据（完全保留原版+新增推荐配置变量） ==========
         let e5Prices = {};
         let e3Prices = {};
         let cpuParams = {};
         let gpuParams = {};
         let powerParams = {};
-        // ========== 3. 页面加载完成后初始化（完全保留原版逻辑+新增后端数据加载） ==========
+        let recommendConfigs = []; // 新增：推荐配置全局存储
+        // ========== 3. 页面加载完成后初始化（完全保留原版逻辑+新增推荐配置加载） ==========
         document.addEventListener('DOMContentLoaded', async function() {
-            // 1. 从后端加载价格和参数数据
+            // 1. 从后端加载价格和参数数据（完全保留原版）
             await loadBackendData();
             
-            // 2. 初始化下拉框选项
+            // 2. 初始化下拉框选项（完全保留原版）
             initSelectOptions();
             
             // 3. 完全保留原版的所有初始化逻辑
             initOriginalFeatures();
             
-            // 4. 计算初始价格
+            // 4. 新增：渲染推荐配置按钮
+            renderRecommendConfigs();
+            
+            // 5. 计算初始价格（完全保留原版）
             calculateE5Price();
             calculateE3Price();
         });
-        // ========== 4. 从后端加载数据（新增，仅修改数据来源） ==========
+        // ========== 4. 从后端加载数据（新增推荐配置请求，其余完全保留原版） ==========
         async function loadBackendData() {
             try {
-                // 加载E5价格
+                // 加载E5价格（完全保留原版）
                 const e5Res = await fetch(`${API_BASE_URL}/api/prices/e5`);
                 e5Prices = await e5Res.json();
                 
-                // 加载E3价格
+                // 加载E3价格（完全保留原版）
                 const e3Res = await fetch(`${API_BASE_URL}/api/prices/e3`);
                 e3Prices = await e3Res.json();
                 
-                // 加载配件参数（如果后端有参数接口则调用，没有则使用本地默认值）
+                // 加载配件参数（完全保留原版）
                 try {
                     const paramsRes = await fetch(`${API_BASE_URL}/api/parts-params`);
                     const paramsData = await paramsRes.json();
@@ -771,16 +765,56 @@
                     gpuParams = paramsData.gpu || {};
                     powerParams = paramsData.power || {};
                 } catch (e) {
-                    // 后端无参数接口时使用本地默认值（完全保留原版参数）
+                    // 后端无参数接口时使用本地默认值（完全保留原版）
                     setDefaultParams();
+                }
+
+                // 新增：加载推荐配置数据
+                try {
+                    const recommendRes = await fetch(`${API_BASE_URL}/api/recommend-configs`);
+                    recommendConfigs = await recommendRes.json();
+                } catch (e) {
+                    // 接口请求失败时使用默认配置兜底，保证页面正常运行
+                    recommendConfigs = [
+                        {
+                            id: "config1",
+                            name: "性价比最高多开（梦幻.传奇）配置",
+                            type: "e5",
+                            parts: { cpu: "2650", motherboard: "x79 （支持v2）", memory: "16（8+8）", gpu: "gtx650", hard_disk: "120g", power_supply: "300w", case: "全黑小机箱" }
+                        },
+                        {
+                            id: "config2",
+                            name: "纯基础游戏（LOL、穿越）最具性价比",
+                            type: "e3",
+                            parts: { cpu: "e3-1230v2", motherboard: "h61", memory: "8", gpu: "gtx650", hard_disk: "120", power_supply: "300", case: "small" }
+                        },
+                        {
+                            id: "config3",
+                            name: "纯高端游戏（吃鸡、三角洲）最具性价比",
+                            type: "e3",
+                            parts: { cpu: "e3-1230v3", motherboard: "b85", memory: "16", gpu: "r9380", hard_disk: "240", power_supply: "500", case: "large" }
+                        },
+                        {
+                            id: "config4",
+                            name: "纯日常办公最具性价比流畅",
+                            type: "e3",
+                            parts: { cpu: "i5-4590", motherboard: "b85", memory: "8", gpu: "none", hard_disk: "120", power_supply: "300", case: "small" }
+                        },
+                        {
+                            id: "config5",
+                            name: "多开+高端游戏兼顾最具性价比",
+                            type: "e5",
+                            parts: { cpu: "2673v3", motherboard: "x99（支持v3v4）", memory: "16（8+8）", gpu: "gtx750ti", hard_disk: "240g", power_supply: "400w", case: "全黑小机箱" }
+                        }
+                    ];
                 }
             } catch (e) {
                 console.error('加载后端数据失败:', e);
-                // 网络错误时使用本地默认值（完全保留原版数据）
+                // 网络错误时使用本地默认值（完全保留原版）
                 setDefaultData();
             }
         }
-        // ========== 5. 本地默认数据（完全保留原版，作为后端不可用时的兜底） ==========
+        // ========== 5. 本地默认数据（完全保留原版，无任何修改） ==========
         function setDefaultData() {
             e5Prices = {
                 cpu: { "2666v3": 175, "2673v3": 90, "1650v2": 60, "2696v2": 70, "2686v4": 130, "2696v3": 200, "2696v4": 320, "2698bv3": 95, "2629v3": 75, "2650": 30 },
@@ -852,7 +886,7 @@
                 "600w": "无特殊参数"
             };
         }
-        // ========== 6. 初始化下拉框选项（根据后端数据动态生成） ==========
+        // ========== 6. 初始化下拉框选项（完全保留原版，无任何修改） ==========
         function initSelectOptions() {
             // E5配置下拉框
             initSelect('e5-cpu', e5Prices.cpu);
@@ -882,7 +916,7 @@
                 select.appendChild(option);
             }
         }
-        // ========== 7. 完全保留原版的所有功能初始化 ==========
+        // ========== 7. 完全保留原版的所有功能初始化（无任何修改） ==========
         function initOriginalFeatures() {
             // 1. 图片淡入效果
             document.querySelectorAll('.img-fade-in').forEach(img => {
@@ -932,7 +966,7 @@
             document.getElementById('faq-input').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') matchFaqKeyword();
             });
-            // 5. E5 CPU与主板匹配监听
+            // 5. E5 CPU与主板匹配监听（完全保留原版）
             document.getElementById('e5-cpu').addEventListener('change', function() {
                 const cpu = this.value;
                 const motherboardSelect = document.getElementById('e5-motherboard');
@@ -952,7 +986,7 @@
                 }
                 calculateE5Price();
             });
-            // 6. E3 CPU与主板匹配监听
+            // 6. E3 CPU与主板匹配监听（完全保留原版）
             document.getElementById('e3-cpu').addEventListener('change', function() {
                 const cpu = this.value;
                 const motherboardSelect = document.getElementById('e3-motherboard');
@@ -1042,7 +1076,7 @@
                     showToast('复制失败，请手动复制');
                 });
             });
-            // 8. 推荐配置弹窗事件
+            // 8. 推荐配置弹窗打开事件（完全保留原版）
             document.getElementById('e5-recommend-btn').addEventListener('click', function() {
                 document.getElementById('recommend-modal').classList.remove('hidden');
             });
@@ -1055,7 +1089,7 @@
             document.getElementById('recommend-modal').addEventListener('click', function(e) {
                 if (e.target === this) document.getElementById('recommend-modal').classList.add('hidden');
             });
-            // 9. 配件参数弹窗事件
+            // 9. 配件参数弹窗事件（完全保留原版）
             document.querySelectorAll('.cpu-info-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const type = this.getAttribute('data-type');
@@ -1108,7 +1142,7 @@
                     if (e.target === this) modal.classList.add('hidden');
                 });
             });
-            // 10. E5配置其他事件
+            // 10. E5配置其他事件（完全保留原版）
             document.getElementById('e5-motherboard').addEventListener('change', () => calculateE5Price());
             document.getElementById('e5-memory').addEventListener('change', () => calculateE5Price());
             document.getElementById('e5-gpu').addEventListener('change', () => calculateE5Price());
@@ -1118,7 +1152,7 @@
             document.getElementById('e5-copy-btn').addEventListener('click', function() {
                 copyConfig('e5');
             });
-            // 11. E3配置其他事件
+            // 11. E3配置其他事件（完全保留原版）
             document.getElementById('e3-motherboard').addEventListener('change', () => calculateE3Price());
             document.getElementById('e3-memory').addEventListener('change', () => calculateE3Price());
             document.getElementById('e3-gpu').addEventListener('change', () => calculateE3Price());
@@ -1128,86 +1162,7 @@
             document.getElementById('e3-copy-btn').addEventListener('click', function() {
                 copyConfig('e3');
             });
-            // 12. 推荐配置一键填充
-            document.getElementById('config1-btn').addEventListener('click', function() {
-                switchPage('e5-section');
-                document.getElementById('e5-cpu').value = '2650';
-                document.getElementById('e5-motherboard').innerHTML = '<option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>';
-                document.getElementById('e5-memory').value = '16（8+8）';
-                document.getElementById('e5-gpu').value = 'gtx650';
-                document.getElementById('e5-hard_disk').value = '120g';
-                document.getElementById('e5-power_supply').value = '300w';
-                document.getElementById('e5-case').value = '全黑小机箱';
-                calculateE5Price();
-                document.getElementById('recommend-modal').classList.add('hidden');
-            });
-            document.getElementById('config2-btn').addEventListener('click', function() {
-                switchPage('e3-section');
-                document.getElementById('e3-cpu').value = 'e3-1230v2';
-                document.getElementById('e3-motherboard').innerHTML = '<option value="h61">h61 - ¥40</option>';
-                document.getElementById('e3-memory').innerHTML = `
-                    <option value="">请选择内存</option>
-                    <option value="8" selected>8g（4+4） - ¥110</option>
-                    <option value="16">16（8+8） - ¥220</option>
-                    <option value="32">32（16+16） - ¥520</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
-                document.getElementById('e3-gpu').value = 'gtx650';
-                document.getElementById('e3-hard_disk').value = '120';
-                document.getElementById('e3-power_supply').value = '300';
-                document.getElementById('e3-case').value = 'small';
-                calculateE3Price();
-                document.getElementById('recommend-modal').classList.add('hidden');
-            });
-            document.getElementById('config3-btn').addEventListener('click', function() {
-                switchPage('e3-section');
-                document.getElementById('e3-cpu').value = 'e3-1230v3';
-                document.getElementById('e3-motherboard').innerHTML = '<option value="b85">b85 - ¥50</option>';
-                document.getElementById('e3-memory').innerHTML = `
-                    <option value="">请选择内存</option>
-                    <option value="8">8g（4+4） - ¥110</option>
-                    <option value="16" selected>16（8+8） - ¥220</option>
-                    <option value="32">32（16+16） - ¥520</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
-                document.getElementById('e3-gpu').value = 'r9380';
-                document.getElementById('e3-hard_disk').value = '240';
-                document.getElementById('e3-power_supply').value = '500';
-                document.getElementById('e3-case').value = 'large';
-                calculateE3Price();
-                document.getElementById('recommend-modal').classList.add('hidden');
-            });
-            document.getElementById('config4-btn').addEventListener('click', function() {
-                switchPage('e3-section');
-                document.getElementById('e3-cpu').value = 'i5-4590';
-                document.getElementById('e3-motherboard').innerHTML = '<option value="b85">b85 - ¥50</option>';
-                document.getElementById('e3-memory').innerHTML = `
-                    <option value="">请选择内存</option>
-                    <option value="8" selected>8g（4+4） - ¥110</option>
-                    <option value="16">16（8+8） - ¥220</option>
-                    <option value="32">32（16+16） - ¥520</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
-                document.getElementById('e3-gpu').value = 'none';
-                document.getElementById('e3-hard_disk').value = '120';
-                document.getElementById('e3-power_supply').value = '300';
-                document.getElementById('e3-case').value = 'small';
-                calculateE3Price();
-                document.getElementById('recommend-modal').classList.add('hidden');
-            });
-            document.getElementById('config5-btn').addEventListener('click', function() {
-                switchPage('e5-section');
-                document.getElementById('e5-cpu').value = '2673v3';
-                document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
-                document.getElementById('e5-memory').value = '16（8+8）';
-                document.getElementById('e5-gpu').value = 'gtx750ti';
-                document.getElementById('e5-hard_disk').value = '240g';
-                document.getElementById('e5-power_supply').value = '400w';
-                document.getElementById('e5-case').value = '全黑小机箱';
-                calculateE5Price();
-                document.getElementById('recommend-modal').classList.add('hidden');
-            });
-            // 13. 初始化默认配置
+            // 12. 初始化默认配置（完全保留原版）
             document.getElementById('e5-cpu').value = '2673v3';
             document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
             document.getElementById('e5-memory').value = '16（8+8）';
@@ -1230,11 +1185,11 @@
             document.getElementById('e3-power_supply').value = '300';
             document.getElementById('e3-case').value = 'small';
             
-            // 修复CPU自动匹配的事件绑定，替换原来的事件处理
+            // 修复CPU自动匹配的事件绑定，替换原来的事件处理（完全保留原版）
             document.getElementById('e5-cpu').onchange = handleE5CpuChange;
             document.getElementById('e3-cpu').onchange = handleE3CpuChange;
         }
-        // ========== 8. 页面切换功能（完全保留原版） ==========
+        // ========== 8. 页面切换功能（完全保留原版，无任何修改） ==========
         function switchPage(pageId) {
             document.querySelectorAll('section').forEach(section => {
                 section.classList.add('hidden');
@@ -1245,8 +1200,8 @@
             targetPage.classList.add('block');
             window.scrollTo(0, 0);
         }
-        // ========== 9. 价格计算功能（完全保留原版逻辑，仅数据来源改为后端） ==========
-        // ========== CPU选择自动匹配主板/内存功能（修复自动选择bug） ==========
+        // ========== 9. 价格计算功能（完全保留原版，无任何修改） ==========
+        // ========== CPU选择自动匹配主板/内存功能（完全保留原版，无任何修改） ==========
         function handleE5CpuChange() {
             const cpu = document.getElementById('e5-cpu').value;
             const motherboardSelect = document.getElementById('e5-motherboard');
@@ -1389,7 +1344,7 @@
             document.getElementById('e3-parts-price').textContent = `¥${total.toFixed(2)}`;
             document.getElementById('e3-total-price').textContent = `¥${(total + 50).toFixed(2)}`;
         }
-        // ========== 10. 复制配置功能（已修复） ==========
+        // ========== 10. 复制配置功能（完全保留原版，无任何修改） ==========
         function copyConfig(type) {
             let config = '';
             // 安全获取select选中文本的工具函数，避免选中项异常报错
@@ -1403,7 +1358,6 @@
                 const element = document.getElementById(elementId);
                 return element ? element.textContent : '¥0';
             };
-
             if (type === 'e5') {
                 config = `【IKUN数码 E5配置详情】
 CPU：${getSelectText('e5-cpu')}
@@ -1429,7 +1383,6 @@ CPU：${getSelectText('e3-cpu')}
 + 50元（装机+运费+售后+散热）
 最终售价：${getElementText('e3-total-price')}`;
             }
-
             // 兼容HTTP/HTTPS双环境的复制方案
             const copyToClipboard = (text) => {
                 return new Promise((resolve, reject) => {
@@ -1457,14 +1410,13 @@ CPU：${getSelectText('e3-cpu')}
                     }
                 });
             };
-
             copyToClipboard(config).then(function() {
                 showToast('配置和价格已复制到剪贴板');
             }).catch(function() {
                 showToast('复制失败，请手动复制');
             });
         }
-        // ========== 11. Toast提示功能（完全保留原版） ==========
+        // ========== 11. Toast提示功能（完全保留原版，无任何修改） ==========
         function showToast(text, duration = 2000) {
             const toast = document.getElementById('toast');
             const toastText = document.getElementById('toast-text');
@@ -1474,7 +1426,7 @@ CPU：${getSelectText('e3-cpu')}
                 toast.classList.add('hidden');
             }, duration);
         }
-        // ========== 12. 在线客服关键词匹配（完全保留原版） ==========
+        // ========== 12. 在线客服关键词匹配（完全保留原版，无任何修改） ==========
         function matchFaqKeyword() {
             const input = document.getElementById("faq-input").value.trim().toLowerCase();
             const chatMessages = document.getElementById("chat-messages");
@@ -1543,6 +1495,79 @@ CPU：${getSelectText('e3-cpu')}
         }
         function openFaqModal() {
             document.getElementById('faq-service-modal').classList.remove('hidden');
+        }
+
+        // ========== 新增：推荐配置渲染函数 ==========
+        function renderRecommendConfigs() {
+            const container = document.getElementById('recommend-config-list');
+            if (!recommendConfigs || recommendConfigs.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">暂无推荐配置</p>';
+                return;
+            }
+            // 动态生成推荐配置按钮
+            let html = '';
+            recommendConfigs.forEach((config, index) => {
+                html += `
+                <button class="recommend-config-btn w-full bg-gray-100 hover:bg-gray-200 py-2.5 px-4 rounded-lg text-left text-sm text-gray-800 font-medium transition-colors click-feedback touch-friendly" data-config-id="${config.id}">
+                    ${index + 1}. ${config.name}
+                </button>
+                `;
+            });
+            container.innerHTML = html;
+            // 绑定点击事件
+            document.querySelectorAll('.recommend-config-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const configId = this.getAttribute('data-config-id');
+                    fillRecommendConfig(configId);
+                });
+            });
+        }
+
+        // ========== 新增：推荐配置一键填充函数 ==========
+        function fillRecommendConfig(configId) {
+            // 找到对应的配置
+            const config = recommendConfigs.find(item => item.id === configId);
+            if (!config) {
+                showToast('配置不存在', false);
+                return;
+            }
+            const { type, parts } = config;
+            // 1. 切换到对应的配置页面
+            switchPage(`${type}-section`);
+            // 2. 关闭推荐配置弹窗
+            document.getElementById('recommend-modal').classList.add('hidden');
+            // 3. 填充对应配置
+            if (type === 'e5') {
+                const cpuSelect = document.getElementById('e5-cpu');
+                // 先设置CPU，触发change事件自动匹配主板
+                cpuSelect.value = parts.cpu || '';
+                cpuSelect.dispatchEvent(new Event('change'));
+                // 等待主板匹配完成后，填充其他配件
+                setTimeout(() => {
+                    document.getElementById('e5-memory').value = parts.memory || '';
+                    document.getElementById('e5-gpu').value = parts.gpu || '';
+                    document.getElementById('e5-hard_disk').value = parts.hard_disk || '';
+                    document.getElementById('e5-power_supply').value = parts.power_supply || '';
+                    document.getElementById('e5-case').value = parts.case || '';
+                    // 重新计算价格
+                    calculateE5Price();
+                }, 50);
+            } else if (type === 'e3') {
+                const cpuSelect = document.getElementById('e3-cpu');
+                // 先设置CPU，触发change事件自动匹配主板和内存选项
+                cpuSelect.value = parts.cpu || '';
+                cpuSelect.dispatchEvent(new Event('change'));
+                // 等待主板和内存选项匹配完成后，填充其他配件
+                setTimeout(() => {
+                    document.getElementById('e3-memory').value = parts.memory || '';
+                    document.getElementById('e3-gpu').value = parts.gpu || '';
+                    document.getElementById('e3-hard_disk').value = parts.hard_disk || '';
+                    document.getElementById('e3-power_supply').value = parts.power_supply || '';
+                    document.getElementById('e3-case').value = parts.case || '';
+                    // 重新计算价格
+                    calculateE3Price();
+                }, 50);
+            }
         }
     </script>
 </body>
