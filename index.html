@@ -717,7 +717,7 @@
             <i class="fa fa-comments mr-2"></i> 在线咨询
         </button>
     </div>
-    <!-- ====================== JavaScript逻辑（仅修改推荐配置相关，其余完全保留原版） ====================== -->
+    <!-- ====================== JavaScript逻辑（修复核心问题，其余完全保留原版） ====================== -->
     <script>
         // ========== 1. 后端接口地址（完全保留原版，用户自行替换） ==========
         const API_BASE_URL = "https://ikuntechnology.cc.cd"; // 替换为你的Cloudflare Worker地址
@@ -915,7 +915,7 @@
                 select.appendChild(option);
             }
         }
-        // ========== 7. 完全保留原版的所有功能初始化（无任何修改） ==========
+        // ========== 7. 完全保留原版的所有功能初始化（修复默认值设置） ==========
         function initOriginalFeatures() {
             // 1. 图片淡入效果
             document.querySelectorAll('.img-fade-in').forEach(img => {
@@ -1000,7 +1000,7 @@
                     motherboardSelect.value = "h61";
                     memorySelect.innerHTML = `
                         <option value="">请选择内存</option>
-                        <option value="8">8g（4+4） - ¥110</option>
+                        <option value="8" selected>8g（4+4） - ¥110</option>
                         <option value="16">16（8+8） - ¥220</option>
                         <option value="32">32（16+16） - ¥520</option>
                         <option value="0">无内存 - ¥0</option>
@@ -1012,7 +1012,7 @@
                     motherboardSelect.value = "b85";
                     memorySelect.innerHTML = `
                         <option value="">请选择内存</option>
-                        <option value="8">8g（4+4） - ¥110</option>
+                        <option value="8" selected>8g（4+4） - ¥110</option>
                         <option value="16">16（8+8） - ¥220</option>
                         <option value="32">32（16+16） - ¥520</option>
                         <option value="0">无内存 - ¥0</option>
@@ -1024,8 +1024,8 @@
                     motherboardSelect.value = "h110";
                     memorySelect.innerHTML = `
                         <option value="">请选择内存</option>
-                        <option value="ddr4-8">ddr4 8g（4+4） - ¥260</option>
-                        <option value="ddr4-16">ddr4 16g（8+8） - ¥440</option>
+                        <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
+                        <option value="ddr4-16">ddr4 16g - ¥440</option>
                         <option value="0">无内存 - ¥0</option>
                     `;
                 } else if (cpu === "i5-9400f") {
@@ -1035,8 +1035,8 @@
                     motherboardSelect.value = "b365-h310";
                     memorySelect.innerHTML = `
                         <option value="">请选择内存</option>
-                        <option value="ddr4-8">ddr4 8g（4+4） - ¥260</option>
-                        <option value="ddr4-16">ddr4 16g（8+8） - ¥440</option>
+                        <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
+                        <option value="ddr4-16">ddr4 16g - ¥440</option>
                         <option value="0">无内存 - ¥0</option>
                     `;
                 } else {
@@ -1161,7 +1161,7 @@
             document.getElementById('e3-copy-btn').addEventListener('click', function() {
                 copyConfig('e3');
             });
-            // 12. 初始化默认配置（完全保留原版）
+            // 12. 初始化默认配置（修复：优先中文key，兼容中英文）
             document.getElementById('e5-cpu').value = '2673v3';
             document.getElementById('e5-motherboard').innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
             document.getElementById('e5-memory').value = '16（8+8）';
@@ -1170,6 +1170,7 @@
             document.getElementById('e5-power_supply').value = '300w';
             document.getElementById('e5-case').value = '全黑小机箱';
             
+            // E3默认配置修复：优先匹配中文key，兼容英文
             document.getElementById('e3-cpu').value = 'e3-1225v2';
             document.getElementById('e3-motherboard').innerHTML = '<option value="h61">h61 - ¥40</option>';
             document.getElementById('e3-memory').innerHTML = `
@@ -1179,10 +1180,14 @@
                 <option value="32">32（16+16） - ¥520</option>
                 <option value="0">无内存 - ¥0</option>
             `;
-            document.getElementById('e3-gpu').value = 'none';
+            // 显卡默认值修复：优先中文"无显卡"，兼容英文"none"
+            const defaultGpuKey = e3Prices.gpu.hasOwnProperty('无显卡') ? '无显卡' : 'none';
+            document.getElementById('e3-gpu').value = defaultGpuKey;
             document.getElementById('e3-hard_disk').value = '120';
             document.getElementById('e3-power_supply').value = '300';
-            document.getElementById('e3-case').value = 'small';
+            // 机箱默认值修复：优先中文"全黑小机箱"，兼容英文"small"
+            const defaultCaseKey = e3Prices.case.hasOwnProperty('全黑小机箱') ? '全黑小机箱' : 'small';
+            document.getElementById('e3-case').value = defaultCaseKey;
             
             // 修复CPU自动匹配的事件绑定，替换原来的事件处理（完全保留原版）
             document.getElementById('e5-cpu').onchange = handleE5CpuChange;
@@ -1200,7 +1205,7 @@
             window.scrollTo(0, 0);
         }
         // ========== 9. 价格计算功能（完全保留原版，无任何修改） ==========
-        // ========== CPU选择自动匹配主板/内存功能（完全保留原版，无任何修改） ==========
+        // ========== CPU选择自动匹配主板/内存功能（修复后版本） ==========
         function handleE5CpuChange() {
             const cpu = document.getElementById('e5-cpu').value;
             const motherboardSelect = document.getElementById('e5-motherboard');
@@ -1222,53 +1227,75 @@
             const cpu = document.getElementById('e3-cpu').value;
             const motherboardSelect = document.getElementById('e3-motherboard');
             const memorySelect = document.getElementById('e3-memory');
+            const gpuSelect = document.getElementById('e3-gpu');
+            const caseSelect = document.getElementById('e3-case');
+            // 保存当前内存的选中值，避免切换CPU后清空
+            const currentMemoryValue = memorySelect.value;
             
             let motherboardHtml, memoryHtml;
+            let isDdr4 = false; // 标记是否为DDR4内存
             
             // 根据CPU类型自动设置匹配的主板和内存选项
             if (cpu === 'e3-1225v2' || cpu === 'e3-1230v2') {
                 // v2系列CPU，匹配h61主板+DDR3内存
                 motherboardHtml = '<option value="h61">h61 - ¥40</option>';
-                memoryHtml = `
-                    <option value="">请选择内存</option>
-                    <option value="8" selected>8g（4+4） - ¥110</option>
-                    <option value="16">16（8+8） - ¥220</option>
-                    <option value="32">32（16+16） - ¥520</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
+                isDdr4 = false;
             } else if (cpu === 'e3-1225v3' || cpu === 'e3-1230v3' || cpu === 'i5-4590') {
                 // v3/i5-4590，匹配b85主板+DDR3内存
                 motherboardHtml = '<option value="b85">b85 - ¥50</option>';
-                memoryHtml = `
-                    <option value="">请选择内存</option>
-                    <option value="8" selected>8g（4+4） - ¥110</option>
-                    <option value="16">16（8+8） - ¥220</option>
-                    <option value="32">32（16+16） - ¥520</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
+                isDdr4 = false;
             } else if (cpu === 'i5-7500') {
                 // i5-7500，匹配h110主板+DDR4内存
                 motherboardHtml = '<option value="h110">h110 - ¥120</option>';
-                memoryHtml = `
-                    <option value="">请选择内存</option>
-                    <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
-                    <option value="ddr4-16">ddr4 16g - ¥440</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
+                isDdr4 = true;
             } else if (cpu === 'i5-9400f') {
                 // i5-9400f，匹配b365-h310主板+DDR4内存
                 motherboardHtml = '<option value="b365-h310">b365-h310 - ¥150</option>';
-                memoryHtml = `
-                    <option value="">请选择内存</option>
-                    <option value="ddr4-8" selected>ddr4 8g - ¥260</option>
-                    <option value="ddr4-16">ddr4 16g - ¥440</option>
-                    <option value="0">无内存 - ¥0</option>
-                `;
+                isDdr4 = true;
+            }
+            
+            // ========== 修复：动态生成内存选项，从e3Prices.memory读取，不再硬编码 ==========
+            memoryHtml = '<option value="">请选择内存</option>';
+            // 过滤对应类型的内存型号
+            const filteredMemory = Object.entries(e3Prices.memory).filter(([model]) => {
+                if (isDdr4) {
+                    // DDR4内存：保留ddr4-开头和无内存
+                    return model.startsWith('ddr4-') || model === '0';
+                } else {
+                    // DDR3内存：保留非ddr4-开头的
+                    return !model.startsWith('ddr4-');
+                }
+            });
+            // 生成option
+            let defaultMemoryValue = '';
+            filteredMemory.forEach(([model, price]) => {
+                const isSelected = model === currentMemoryValue;
+                // 记录第一个非0的型号作为默认选中值
+                if (!defaultMemoryValue && model !== '0') {
+                    defaultMemoryValue = model;
+                }
+                memoryHtml += `<option value="${model}" ${isSelected ? 'selected' : ''}>${model} - ¥${price}</option>`;
+            });
+            // 如果没有当前选中值，设置默认选中第一个非0的型号
+            if (!currentMemoryValue && defaultMemoryValue) {
+                memoryHtml = memoryHtml.replace(`value="${defaultMemoryValue}"`, `value="${defaultMemoryValue}" selected`);
             }
             
             // 更新主板和内存的下拉选项
             motherboardSelect.innerHTML = motherboardHtml;
             memorySelect.innerHTML = memoryHtml;
+            
+            // ========== 修复：进入e3页面时，显卡和机箱默认选中（优先中文key，兼容中英文） ==========
+            const defaultGpuKey = e3Prices.gpu.hasOwnProperty('无显卡') ? '无显卡' : 'none';
+            const defaultCaseKey = e3Prices.case.hasOwnProperty('全黑小机箱') ? '全黑小机箱' : 'small';
+            // 显卡默认选中无显卡
+            if (!gpuSelect.value) {
+                gpuSelect.value = defaultGpuKey;
+            }
+            // 机箱默认选中全黑小机箱
+            if (!caseSelect.value) {
+                caseSelect.value = defaultCaseKey;
+            }
             
             // 重新计算价格
             calculateE3Price();
