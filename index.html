@@ -1147,16 +1147,30 @@
             targetPage.classList.add('block');
             window.scrollTo(0, 0);
         }
-        // ========== 9. CPU匹配处理 ==========
+        // ========== 9. CPU匹配处理（核心修复：通用E5 CPU与主板匹配规则） ==========
         function handleE5CpuChange() {
-            const cpu = document.getElementById('e5-cpu').value;
+            const cpu = document.getElementById('e5-cpu').value.trim();
             const motherboardSelect = document.getElementById('e5-motherboard');
             
-            if (cpu === '2650' || cpu.endsWith('v2')) {
-                motherboardSelect.innerHTML = '<option value="x79 （支持v2）">x79 （支持v2） - ¥90</option>';
+            // 通用版本号提取规则：匹配末尾的v+数字，无后缀默认v1
+            const versionMatch = cpu.match(/v(\d+)$/i);
+            const cpuVersion = versionMatch ? parseInt(versionMatch[1], 10) : 1;
+
+            // 主板匹配规则：v1/v2 → x79，v3及以上 → x99
+            let motherboardKey, motherboardName, motherboardPrice;
+            if (cpuVersion <= 2) {
+                motherboardKey = 'x79 （支持v2）';
+                motherboardName = 'x79 （支持v2）';
+                motherboardPrice = e5Prices.motherboard[motherboardKey] || 90;
             } else {
-                motherboardSelect.innerHTML = '<option value="x99（支持v3v4）">x99（支持v3v4） - ¥130</option>';
+                motherboardKey = 'x99（支持v3v4）';
+                motherboardName = 'x99（支持v3v4）';
+                motherboardPrice = e5Prices.motherboard[motherboardKey] || 130;
             }
+
+            // 生成主板选项，动态取价格，与后端数据同步
+            motherboardSelect.innerHTML = `<option value="${motherboardKey}">${motherboardName} - ¥${motherboardPrice}</option>`;
+            
             calculateE5Price();
         }
         function handleE3CpuChange() {
